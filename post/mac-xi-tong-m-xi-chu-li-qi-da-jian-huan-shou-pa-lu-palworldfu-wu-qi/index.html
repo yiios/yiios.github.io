@@ -1,0 +1,415 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mac 系统(M 系处理器)搭建幻兽帕鲁(palworld)服务器 | 画家-个人简历</title>
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1711521151119">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Mac 系统(M 系处理器)搭建幻兽帕鲁(palworld)服务器 | 画家-个人简历 - Atom Feed" href="https://www.yiios.com/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <meta name="description" content="
+环境准备
+
+下载安装docker，https://www.docker.com/。
+修改 docker desktop 中的 Settings - Resources ，把CPU Limit拉满，Memory Limit 拉到给剩2-3G..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://www.yiios.com">
+  <img class="avatar" src="https://www.yiios.com/images/avatar.png?v=1711521151119" alt="">
+  </a>
+  <h1 class="site-title">
+    画家-个人简历
+  </h1>
+  <p class="site-description">
+    
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/yiios" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Mac 系统(M 系处理器)搭建幻兽帕鲁(palworld)服务器
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-01-24
+              </span>
+              <span>
+                8 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://www.yiios.com/post-images/mac-xi-tong-m-xi-chu-li-qi-da-jian-huan-shou-pa-lu-palworldfu-wu-qi.jpg" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <!-- more -->
+<h2 id="环境准备">环境准备</h2>
+<ol>
+<li>下载安装docker，https://www.docker.com/。</li>
+<li>修改 docker desktop 中的 Settings - Resources ，把CPU Limit拉满，Memory Limit 拉到给剩2-3G接近满值，Swap拉满，保存。</li>
+<li>创建一个文件夹，例如：<code>palworld-arm-docker</code>，在里面创建一个空的子文件夹 <code>palworld</code>。</li>
+</ol>
+<h2 id="docker-compose">docker-compose</h2>
+<p>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>docker-compose.yml</code> 文件。<br>
+<code>mem_limit</code>视自己的刚才的<code>Memory Limit</code>调整，比如<code>Memory Limit</code>是14G，那么<code>mem_limit</code>就设定为13G，这样可以在内存泄露严重时自动重启容器。</p>
+<pre><code>version: '3'
+services:
+  pal:
+    image: czy0612/palworld-server
+    restart: always
+    mem_limit: 13g
+    container_name: pal
+    ports:
+      - 8211:8211/udp
+      - 25575:25575/tcp
+    volumes:
+      - ./PalWorldSettings.ini:/home/steam/Steam/steamapps/common/PalServer/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini
+      - ./palworld:/home/steam/Steam/steamapps/common/PalServer/
+</code></pre>
+<h2 id="palgameworldsettings游戏配置">PalGameWorldSettings(游戏配置)</h2>
+<p>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>PalWorldSettings.ini</code> 文件。</p>
+<p>官方文档：https://tech.palworldgame.com/optimize-game-balance<br>
+配置生成器：https://dysoncheng.github.io/PalWorldSettingGenerator/setting.html</p>
+<p>默认配置如下，如何修改可以参考上面两个网页：</p>
+<pre><code>[/Script/Pal.PalGameWorldSettings]
+OptionSettings=(Difficulty=None,DayTimeSpeedRate=1.000000,NightTimeSpeedRate=1.000000,ExpRate=1.000000,PalCaptureRate=1.000000,PalSpawnNumRate=1.000000,PalDamageRateAttack=1.000000,PalDamageRateDefense=1.000000,PlayerDamageRateAttack=1.000000,PlayerDamageRateDefense=1.000000,PlayerStomachDecreaceRate=1.000000,PlayerStaminaDecreaceRate=1.000000,PlayerAutoHPRegeneRate=1.000000,PlayerAutoHpRegeneRateInSleep=1.000000,PalStomachDecreaceRate=1.000000,PalStaminaDecreaceRate=1.000000,PalAutoHPRegeneRate=1.000000,PalAutoHpRegeneRateInSleep=1.000000,BuildObjectDamageRate=1.000000,BuildObjectDeteriorationDamageRate=1.000000,CollectionDropRate=1.000000,CollectionObjectHpRate=1.000000,CollectionObjectRespawnSpeedRate=1.000000,EnemyDropItemRate=1.000000,DeathPenalty=All,bEnablePlayerToPlayerDamage=False,bEnableFriendlyFire=False,bEnableInvaderEnemy=True,bActiveUNKO=False,bEnableAimAssistPad=True,bEnableAimAssistKeyboard=False,DropItemMaxNum=3000,DropItemMaxNum_UNKO=100,BaseCampMaxNum=128,BaseCampWorkerMaxNum=15,DropItemAliveMaxHours=1.000000,bAutoResetGuildNoOnlinePlayers=False,AutoResetGuildTimeNoOnlinePlayers=72.000000,GuildPlayerMaxNum=20,PalEggDefaultHatchingTime=72.000000,WorkSpeedRate=1.000000,bIsMultiplay=False,bIsPvP=False,bCanPickupOtherGuildDeathPenaltyDrop=False,bEnableNonLoginPenalty=True,bEnableFastTravel=True,bIsStartLocationSelectByMap=True,bExistPlayerAfterLogout=False,bEnableDefenseOtherGuildPlayer=False,CoopPlayerMaxNum=4,ServerPlayerMaxNum=32,ServerName=&quot;Default Palworld Server&quot;,ServerDescription=&quot;&quot;,AdminPassword=&quot;123456&quot;,ServerPassword=&quot;&quot;,PublicPort=8211,PublicIP=&quot;&quot;,RCONEnabled=True,RCONPort=25575,Region=&quot;&quot;,bUseAuth=True,BanListURL=&quot;https://api.palworldgame.com/api/banlist.txt&quot;)
+</code></pre>
+<h2 id="运行">运行</h2>
+<ol>
+<li>终端中 cd 到 <code>palworld-arm-docker</code> 文件夹目录下</li>
+<li>拉取 docker 镜像<code>docker-compose pull</code></li>
+<li>运行 <code>docker-compose up -d</code></li>
+<li>等待30秒后 <code>sudo docker logs pal</code><br>
+看到如下信息说明服务器配置好了，马上可以冲了！</li>
+</ol>
+<pre><code>dlopen failed trying to load:
+steamclient.so
+with error:
+steamclient.so: cannot open shared object file: No such file or directory
+[S_API] SteamAPI_Init(): Loaded '/home/steam/.steam/sdk64/steamclient.so' OK.  (First tried local 'steamclient.so')
+CAppInfoCacheReadFromDiskThread took 29 milliseconds to initialize
+Setting breakpad minidump AppID = 2394010
+[S_API FAIL] Tried to access Steam interface SteamUser021 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface SteamFriends017 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface STEAMAPPS_INTERFACE_VERSION008 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface SteamNetworkingUtils004 before SteamAPI_Init succeeded.
+</code></pre>
+<h2 id="网络配置">网络配置</h2>
+<p>如果你能拿到公网ip，看端口映射章节，拿不到公网ip看内网穿透章节。</p>
+<h3 id="端口映射">端口映射</h3>
+<ol>
+<li>路由上给 Mac 终端指定一个ip</li>
+<li>虚拟服务器/端口映射上，配置Mac终端映射端口8211(协议UDP)/25575(协议TCP)</li>
+</ol>
+<h3 id="frp内网穿透">FRP内网穿透</h3>
+<p>FRP教程我这里就不在赘述了，这里使用的是0.52.3版本。下面有一份配置可供参考。</p>
+<p>frps配置参考：</p>
+<pre><code>bindPort = 7001 #{必选} 客户端与该端口建立连接
+transport.tls.enable = true
+
+#身份验证
+auth.method = &quot;token&quot;  #{可选}身份验证方式
+auth.token = &quot;123456&quot; #token设置密码，用于通过身份验证创建连接
+
+#frp服务仪表板配置
+webServer.port = 17300  #{也可自行修改端口}
+webServer.addr = &quot;0.0.0.0&quot; #公网ip或者域名
+webServer.user = &quot;user&quot; #登录用户名{可自行修改}
+webServer.password = &quot;password&quot; #登录密码{可自行修改}
+</code></pre>
+<p>frpc配置参考：</p>
+<pre><code>serverAddr = &quot;114.114.115.115&quot; #填写你的frps服务器
+serverPort = 7001 #填写你的frps服务的端口
+auth.token = &quot;123456&quot;
+transport.tls.enable = true
+
+[[proxies]]
+name = &quot;palworld-ucp&quot;
+type = &quot;udp&quot;
+localIP = &quot;127.0.0.1&quot;
+localPort = 8211
+remotePort = 8211
+
+[[proxies]]
+name = &quot;palworld-rcon&quot;
+type = &quot;tcp&quot;
+localIP = &quot;127.0.0.1&quot;
+localPort = 25575
+remotePort = 25575
+</code></pre>
+<h2 id="游戏运维">游戏运维</h2>
+<h3 id="rcon服务器指令">RCON服务器指令</h3>
+<p>工具：<br>
+https://github.com/gorcon/rcon-cli</p>
+<p>用法示例，12345为之前设置的游戏参数<code>AdminPassword</code>，根据实际情况修改：</p>
+<pre><code>./rcon -a 114.114.115.115:25575 -p 123456
+</code></pre>
+<p>服务器命令表：<br>
+https://tech.palworldgame.com/server-commands</p>
+<h3 id="存档备份">存档备份</h3>
+<h4 id="备份配置">备份配置</h4>
+<p>目前游戏不太稳定，炸档情况偶有发生，所以最好定时备份存档，这样在出问题时可以快速回滚。</p>
+<ol>
+<li>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>back</code> 文件夹。</li>
+<li>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>back.sh</code> 文件（注意按照你<code>palworld-arm-docker</code> 文件夹的实际路径对脚本中的路径进行修改）：</li>
+</ol>
+<pre><code>#!/bin/bash
+
+# 备份文件名
+t=$(date +%Y-%m-%d-%H-%M-%S).zip
+echo $t
+
+# 备份文件存放路径，此处注意
+zip_path=/Users/Admin/Server/palworld-arm-docker/back/$t
+
+# 压缩指定目录为zip
+zip -r -q $zip_path /Users/Admin/Server/palworld-arm-docker/palworld/Pal/Saved/*
+
+# 遍历并删除3天之前的文件
+back_path=/Users/Admin/Server/palworld-arm-docker/back/
+
+# 获取当前时间戳
+current_time=$(date +%s)
+
+# 遍历back路径下的文件
+for file in $back_path*
+do
+    # 检查文件的修改时间
+    modified_time=$(stat -f %m $file)
+    
+    # 计算文件的时间差（以秒为单位）
+    time_diff=$((current_time - modified_time))
+    
+    # 判断文件是否超过3天未修改
+    if [ $time_diff -gt $((3 * 24 * 60 * 60)) ]
+    then
+        # 删除文件
+        rm $file
+    fi
+done
+</code></pre>
+<ol start="3">
+<li>在终端中，输入命令 <code>crontab -e</code> 开始编辑定时任务，在编辑界面中按<code>i</code>进入输入状态，输入下面的指令（注意按照你<code>palworld-arm-docker</code> 文件夹的实际路径对脚本中的路径进行修改）</li>
+</ol>
+<pre><code>*/30 * * * * /bin/bash /Users/Admin/Server/palworld-arm-docker/back.sh
+</code></pre>
+<p>按<code>esc</code>退出输入状态，输入<code>:wq</code>保存文件并退出。如果此时有弹窗提示是否同意，点击同意。<br>
+系统会在每个小时的0分和30分钟备份一次存档。</p>
+<h4 id="回滚存档">回滚存档</h4>
+<p>一旦发生不幸，可以开始回滚存档。</p>
+<ol>
+<li>终端 <code>cd</code> 进入<code>palworld-arm-docker</code>文件夹下，停止 docker 容器<code>docker-compose down</code></li>
+<li>将之前的备份解压，确认成功解压后</li>
+<li>进入 <code>/Users/Admin/Server/palworld-arm-docker/palworld/Pal/Saved/</code> 目录下，压缩备份当前的坏存档，之后删除<code>Saved</code>文件夹下的所有文件。</li>
+<li>将之前解压好的备份移到<code>Saved</code>文件夹下</li>
+<li>终端中启动 docker 容器<code>docker-compose up -d</code></li>
+</ol>
+<h3 id="更新版本">更新版本</h3>
+<p>此docker镜像有自动更新机制，如果服务端有新的更新，会在 docker 容器启动时自动更新游戏。</p>
+<ol>
+<li>终端 <code>cd</code> 进入<code>palworld-arm-docker</code>文件夹下，停止 docker 容器<code>docker-compose down</code></li>
+<li>终端中启动 docker 容器<code>docker-compose up -d</code></li>
+<li>使用 <code>sudo docker logs pal</code> 查看更新进度和是否启动部署成功</li>
+</ol>
+<h2 id="补充">补充</h2>
+<ol>
+<li>设置ServerPassword的话，无法直接输入ip+端口加入房间，必须要曲线救国，最好别设置。</li>
+<li>帕鲁服务端目前非常吃配置，机器内存不建议低于16G。</li>
+<li>帕鲁服务端目前非常吃配置，frps服务器的带宽也很重要，想流畅不卡最少一个在线用户要分到1M的带宽。</li>
+<li>此docker容器的root密码为：steamcmd</li>
+</ol>
+<p>看到最后麻烦给我点个赞！</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87">环境准备</a></li>
+<li><a href="#docker-compose">docker-compose</a></li>
+<li><a href="#palgameworldsettings%E6%B8%B8%E6%88%8F%E9%85%8D%E7%BD%AE">PalGameWorldSettings(游戏配置)</a></li>
+<li><a href="#%E8%BF%90%E8%A1%8C">运行</a></li>
+<li><a href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE">网络配置</a>
+<ul>
+<li><a href="#%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84">端口映射</a></li>
+<li><a href="#frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F">FRP内网穿透</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B8%B8%E6%88%8F%E8%BF%90%E7%BB%B4">游戏运维</a>
+<ul>
+<li><a href="#rcon%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8C%87%E4%BB%A4">RCON服务器指令</a></li>
+<li><a href="#%E5%AD%98%E6%A1%A3%E5%A4%87%E4%BB%BD">存档备份</a>
+<ul>
+<li><a href="#%E5%A4%87%E4%BB%BD%E9%85%8D%E7%BD%AE">备份配置</a></li>
+<li><a href="#%E5%9B%9E%E6%BB%9A%E5%AD%98%E6%A1%A3">回滚存档</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9B%B4%E6%96%B0%E7%89%88%E6%9C%AC">更新版本</a></li>
+</ul>
+</li>
+<li><a href="#%E8%A1%A5%E5%85%85">补充</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://www.yiios.com/post/gou-jian-gao-xing-neng-prompt-zhi-lu-jie-gou-hua-prompt/">
+              <h3 class="post-title">
+                构建高性能 Prompt 之路——结构化 Prompt
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '6fa7de345dbf3ed55114',
+    clientSecret: '129a936f4424ad217798de7ead249bfdb0da1e58',
+    repo: 'yiios.github.io',
+    owner: 'yiios',
+    admin: ['yiios'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+  <a class="rss" href="https://www.yiios.com/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
