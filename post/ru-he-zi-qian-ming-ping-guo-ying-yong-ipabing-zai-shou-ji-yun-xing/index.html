@@ -1,0 +1,227 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何自签名苹果应用(IPA)并在手机运行 | 画家-个人简历</title>
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1718245321943">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="如何自签名苹果应用(IPA)并在手机运行 | 画家-个人简历 - Atom Feed" href="https://www.yiios.com/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <meta name="description" content="背景：
+作为一个 iOS 开发，有时候会编写一些 iOS 小工具。这些工具如果要分发给别人去使用就非常麻烦。所以可以使用生成无签名的 IPA，然后引导别人使用自己的 Apple ID 给 IPA 文件签名使用。
+签名方法：
+1.安装爱思助手..." />
+    <meta name="keywords" content="奇思妙想" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://www.yiios.com">
+  <img class="avatar" src="https://www.yiios.com/images/avatar.png?v=1718245321943" alt="">
+  </a>
+  <h1 class="site-title">
+    画家-个人简历
+  </h1>
+  <p class="site-description">
+    
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/yiios" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              如何自签名苹果应用(IPA)并在手机运行
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-04-02
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://www.yiios.com/tag/hSaIm2Vl2/" class="post-tag">
+                  # 奇思妙想
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://image-10047926.cos.ap-shanghai.myqcloud.com/yiios/ru-he-zi-qian-ming-ping-guo-ying-yong-ipabing-zai-shou-ji-yun-xing.webp" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p><strong>背景：</strong></p>
+<p>作为一个 iOS 开发，有时候会编写一些 iOS 小工具。这些工具如果要分发给别人去使用就非常麻烦。所以可以使用生成无签名的 IPA，然后引导别人使用自己的 Apple ID 给 IPA 文件签名使用。</p>
+<p><strong>签名方法：</strong></p>
+<p>1.安装爱思助手并打开，在选择“工具箱” - “IPA 签名”，打开签名工具页面。</p>
+<figure data-type="image" tabindex="1"><img src="https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5754694929/0551/7947/4ab1/f5bb9604e8563e3c87028d80ea7a41ee.jpg" alt="-w600" loading="lazy"></figure>
+<p>2.选择“使用 Apple ID 签名 - 添加 Apple ID”，随后输入用于签名的 Apple ID、密码并选择或输入对应设备的设备标识（指签名后 IPA 文件要安装的设备）；</p>
+<figure data-type="image" tabindex="2"><img src="https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5754103142/b7aa/e76d/35eb/0ddc46e92aa66607f45c8ea175df6a18.jpg" alt="-w600" loading="lazy"></figure>
+<p>3.检查无误后点击“确定”。建议操作前需要将 iOS 设备连接至爱思助手，并保证可以读出“设备标识”，如果未连接设备，需要手动输入设备标识。Apple ID 添加完成后下方列表就会显示签名信息；</p>
+<figure data-type="image" tabindex="3"><img src="https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5754103145/9ff2/40ac/7801/ace4106e92f5d7a891c6e7bea2a35eff.jpg" alt="-w600" loading="lazy"></figure>
+<p>4.之后，添加需要签名的 IPA 文件并勾选 IPA 文件和用于签名的 Apple ID，点击“开始签名”即可，签名成功后就可以通过爱思助手安装该应用了。安装完成后，在 iOS 设备上首次打开前记得去“设置 - 通用 - 描述文件”内信任该应用。</p>
+<figure data-type="image" tabindex="4"><img src="https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5754103146/32d1/2bbf/6f7c/c389d67a13b0cb979bb962b6c8270d57.jpg" alt="-w600" loading="lazy"></figure>
+<p>请务必注意，已签名的 IPA 文件和原文件保存路径可能并不相同，签名后应该点击“打开已签名 IPA 位置”按钮，可用于安装的已签名 IPA 文件都会储存在该目录下，请注意分辨。</p>
+<figure data-type="image" tabindex="5"><img src="https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5754103147/dca9/c542/6208/9c722a1576163cebef624b1c02d57861.jpg" alt="-w600" loading="lazy"></figure>
+<p>5.获取到签名的ipa文件后，可以直接使用爱思助手安装进app，也可以放置在蒲公英等发布平台上远程安装。</p>
+<figure data-type="image" tabindex="6"><img src="https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5754841774/5268/aa4d/af92/e96fd53aee1856ca4a5adff2a9320c51.jpg" alt="-w600" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://www.yiios.com/post/ren-ti-gong-xue-yi-can-shu-yan-jiu/">
+              <h3 class="post-title">
+                人体工学椅参数研究
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '6fa7de345dbf3ed55114',
+    clientSecret: '129a936f4424ad217798de7ead249bfdb0da1e58',
+    repo: 'yiios.github.io',
+    owner: 'yiios',
+    admin: ['yiios'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+  <a class="rss" href="https://www.yiios.com/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
