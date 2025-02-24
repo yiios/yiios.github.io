@@ -1,0 +1,49 @@
+name: Upstream Sync
+
+permissions:
+  contents: write
+
+# 先注释代码,不需要同步
+# on:
+#   schedule:
+#     - cron: "0 0 * * *" # every day
+#   workflow_dispatch:
+
+jobs:
+  sync_latest_from_upstream:
+    name: Sync latest commits from upstream repo
+    runs-on: ubuntu-latest
+    if: ${{ github.event.repository.fork }}
+
+    steps:
+      # Step 1: Checkout the current repository's master branch
+      - name: Checkout target repo
+        uses: actions/checkout@v3
+        with:
+          ref: master
+
+      # Step 2: Sync upstream changes
+      - name: Sync upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          upstream_sync_repo: yiios/yiios.github.io
+          upstream_sync_branch: master
+          target_sync_branch: master
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }} # Automatically generated
+
+      # Step 3: Check if there are any changes after sync
+      - name: Check for changes
+        run: |
+          git fetch
+          git diff --quiet || echo "Changes detected"
+
+      # Step 4: Commit and push changes if there are any
+      - name: Commit and push changes
+        if: ${{ success() && steps.sync.outputs.changes_detected == 'true' }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add -A
+          git commit -m "chore: sync with upstream"
+          git push origin master
