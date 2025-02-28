@@ -1,0 +1,350 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>发卡平台支付渠道搭建攻略 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    发卡平台支付渠道搭建攻略
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2023-04-30 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <p>首先是整体步骤</p>
+<ol>
+<li>先获得营业执照，代办或者自己办理。如果没有也能搞，但会很麻烦。</li>
+<li>通过营业执照开通云闪付收银台，并通过云闪付收银台开通微信收款和支付宝收款</li>
+<li>搭建易支付平台，对接云闪付收银台上的微信和支付宝渠道</li>
+<li>独角卡对接易支付</li>
+</ol>
+<h2 id="1-营业执照-个体工商户">1. 营业执照 - 个体工商户</h2>
+<h3 id="11-淘宝代办">1.1. 淘宝代办</h3>
+<p>优势：快捷，方便<br>
+劣势：如果不在当地办理注销麻烦</p>
+<p>入口：<br>
+淘宝搜索&quot;个体工商户&quot;</p>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1730793883227.png" alt="" loading="lazy"></figure>
+<h3 id="12-自己办理">1.2. 自己办理</h3>
+<p>自己去当地的行政服务中心办理即可。<br>
+注意点：</p>
+<ol>
+<li>核名，起名字需要注意，最好挑一些正向且冷僻的名字，名字撞车是不允许注册的。</li>
+<li>地址，个体工商户的地址一般只能放在商业地产(产权/租约)或者身份证所属的地址上，这点需要注意，如果两者都不具备，需要考虑代办。</li>
+</ol>
+<h3 id="2-税务登记和年报">2. 税务登记和年报</h3>
+<ol>
+<li>拿到执照后的一个月内记得去做税务登记。</li>
+<li>每年都需要做年报，如果没有业务发生，选择零申报即可。</li>
+</ol>
+<h1 id="2-通过营业执照开通云闪付收银台">2. 通过营业执照开通云闪付收银台</h1>
+<h2 id="21-材料">2.1. 材料</h2>
+<p>中国银联普通商户进件都需要材料，根据店铺类型的不同分为四种情况：</p>
+<p>第一、个人无营业执照且无固定门店：比如摆地摊的 （小微商户）<br>
+需要准备材料：个人身份证（正反面照片）、银行卡正面照片、商家门店（拍门头）、商家门店（店内）、个人手持身份证照片/手持码牌二选一（共计六张照片）</p>
+<p>第二、个人无营业执照且有固定门店（小微商户）<br>
+需要准备材料：个人身份证（正反面）、银行卡正面、商家门店（拍门头）、商家门店（店内）、个人手持照片（共计六张照片）</p>
+<p>第三、企业有营业执照无固定门店（普通商户）<br>
+需要准备：执个人身份证（正反面照片）、银行卡正面照片、商家门店（拍门头）、商家门店（店内）、法人手持身份证照片（共计七张照片）</p>
+<p>第四企业有营业执照有固定门店（普通商户）<br>
+需要准备材料：营业执照、个人身份证（正反面照片）、银行卡正面照片、商家门店（拍门头）、商家门店（店内）、法人手持照片（共计七张照片）</p>
+<h2 id="22-提交材料开通">2.2. 提交材料开通</h2>
+<p>先下载云闪付收银台，安装后进行进件。注意云闪付收银台没有 iOS 端，只有安卓端。</p>
+<figure data-type="image" tabindex="2"><img src="https://www.yiios.com/post-images/1730793874333.jpg" alt="" loading="lazy"></figure>
+<p>好了下面是进件流程(一定要仔细看，别出错后被驳回)：</p>
+<ol>
+<li>主要注意写常用手机号与正确的邀请码，错误的邀请码会导致你失去代理商，后面的步骤无法处理。邀请码在详细步骤中</li>
+<li>小微商户的商户名称格式是 商户_姓名 ，普通商户的商户名称格式是 营业执照全称，不要乱写，不要创意，名字错了微信就没办法支付，你的码就浪费了！</li>
+<li>商户的简称，就看着写吧</li>
+<li>上传文件的位置，与都上传什么文件，仔细看，小微商户不需要传营业执照，普通商户多一个营业执照</li>
+<li>等待商户收取短信，短信的发送时间是：上午9:00-11:30 下午：14:00-17:00</li>
+<li>商户收到短信后，就可以进行商户的微信和支付宝认证了，很重要，不认证银联码不能微信支付宝收款，切记！</li>
+</ol>
+<h3 id="221-提交材料详细步骤">2.2.1 提交材料详细步骤</h3>
+<p>下载云闪付收银台，安装，点注册<br>
+<img src="https://www.yiios.com/post-images/1730793865677.jpg" alt="" loading="lazy"></p>
+<p><strong>同意协议 &amp; 填写负责人资料</strong><br>
+记得在下方邀请码填机构的邀请码(云闪付收银台邀请码：401293096)。<br>
+<img src="https://www.yiios.com/post-images/1730793856035.jpg" alt="" loading="lazy"></p>
+<p><strong>填写商户信息</strong></p>
+<ul>
+<li>无营业执照的商户请选择小微商户（下图左），有营业执照的商户请选择普通商户（下图右）；</li>
+<li>小微商户的商户名称必须填写为商户_姓名，否则无法通过审核和微信认证，比如商户_张三；</li>
+<li>普通商户的商户名称必须填写为营业执照名称；</li>
+<li>商户简称请填写实际店铺门头名称（客户付款成功后会在账单中显示）；</li>
+<li>详细地址填写为实际收款常用地址；</li>
+<li>客服电话填写负责人的常用手机号，售后专用；</li>
+<li>备注可不用填写。</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://www.yiios.com/post-images/1730793845616.jpg" alt="" loading="lazy"></figure>
+<p>行业一般根据实际情况选择，若是软件等线上行业，这里先选个线下的就行（如百货，商超之类就行），不然后面费率就不对了。<br>
+若选错了就会出现下面这种情况，开不了0.38哦.</p>
+<figure data-type="image" tabindex="4"><img src="https://www.yiios.com/post-images/1730793839161.jpg" alt="" loading="lazy"></figure>
+<p><strong>填写银行卡账户类型</strong></p>
+<ul>
+<li>普通商户需要对私入账，请选择个人账户，即法人对私银行卡；</li>
+<li>普通商户需要对公入账，请选择企业账户，即企业对公账户；</li>
+<li>如果查询不到开户支行名称，请选择所在地市的分行。</li>
+</ul>
+<figure data-type="image" tabindex="5"><img src="https://www.yiios.com/post-images/1730793829967.jpg" alt="" loading="lazy"></figure>
+<p><strong>上传证件照片</strong></p>
+<ul>
+<li>小微商户需要上传资料：身份证+银行卡+门头照片(或摊位)+手拿保证书照片（上传到协议一）。</li>
+<li>普通商户需要上传资料：营业执照+身份证+银行卡+门头照片+店铺内景照片（上传到协议二）+店铺收银台照片（上传到协议三）。</li>
+<li>保证书下载地址：<a href="https://wwk.lanzoum.com/iGIsB0f8562h">https://wwk.lanzoum.com/iGIsB0f8562h</a></li>
+</ul>
+<p>注意：店铺门头、内景、收银台照片要体现出是同一家店铺，内景照片要体现出店铺的真实经营内容。</p>
+<p>照片按这个填：<br>
+<img src="https://www.yiios.com/post-images/1730793821925.jpg" alt="" loading="lazy"></p>
+<p>商户信息审核</p>
+<p>提交资料完成之后，请耐心等待审核，工作日一般 30 分钟内审核完毕，审核成功之后，会收到中国银联系统发出的商户账号和初始密码。</p>
+<figure data-type="image" tabindex="6"><img src="https://www.yiios.com/post-images/1730793812328.jpg" alt="" loading="lazy"></figure>
+<h2 id="23-二次认证-拿到密钥">2.3. 二次认证 &amp; 拿到密钥</h2>
+<p>审核通过后，加服务商进行二次认证。<br>
+注意：支付宝认证需要用实体营业执照，微信支付可以用电子版的营业执照截图。</p>
+<figure data-type="image" tabindex="7"><img src="https://www.yiios.com/post-images/1730793804470.jpg" alt="" loading="lazy"></figure>
+<p><strong>二次认证后需要确认是否拿到后台密钥</strong>：</p>
+<ol>
+<li>通过营业执照开通的，后台地址和密钥会直接发送至邮箱中</li>
+<li>没有营业执照的，请联系服务商获取后台密钥。</li>
+</ol>
+<h1 id="3-搭建易支付平台对接云闪付收银台上的微信和支付宝渠道">3. 搭建易支付平台，对接云闪付收银台上的微信和支付宝渠道</h1>
+<h2 id="31-易支付搭建">3.1. 易支付搭建</h2>
+<p><strong>3.1.1 源码获取：</strong><br>
+微信联系： limo-on 私发</p>
+<p><strong>3.1.2 服务器环境</strong></p>
+<p>推荐使用宝塔面板一键部署服务器环境。</p>
+<p>PHP版本：&gt;=7.1，推荐7.4或8.0<br>
+MySQL版本：5.6或5.7</p>
+<p><strong>3.1.2 伪静态配置</strong></p>
+<p>直接上传后访问即可完成安装！<br>
+创建好网站之后，需要配置伪静态才能正常发起支付。以下分别是Nginx、Apache、IIS服务器的伪静态配置方法：</p>
+<p>Nginx<br>
+如果是nginx，伪静态规则在源码包根目录的nginx.txt文件里面。<br>
+将nginx.txt里面的全部内容复制，粘贴到宝塔伪静态配置的输入框里面，点保存即可。</p>
+<p>Apache<br>
+如果是Apache，伪静态规则在.htaccess里面，默认配置好的，不需要单独修改。</p>
+<p>IIS<br>
+如果是IIS，伪静态规则在IIS.txt里面，复制粘贴到宝塔伪静态配置的输入框里面，点保存即可。</p>
+<h2 id="32-易支付支付通道配置">3.2 易支付支付通道配置</h2>
+<p>通过审核后会有秘钥发到你邮箱里，直接把秘钥和账号配置到易支付银联里面就可以了<br>
+<img src="https://www.yiios.com/post-images/1730793765946.jpg" alt="" loading="lazy"></p>
+<figure data-type="image" tabindex="8"><img src="https://www.yiios.com/post-images/1730793745713.jpg" alt="" loading="lazy"></figure>
+<h1 id="4-独角卡对接易支付">4. 独角卡对接易支付</h1>
+<ol>
+<li>在易支付中创建一个普通账号，记下这个账号的 id 和 密钥</li>
+<li>易支付请求网址是网址后面加/submit.php，不然请求没有作用！例如：http://xxx.com/submit.php</li>
+<li>独角卡后台修改易支付微信/易支付支付宝通道的参数：商户id 填第一步的 id，商户key 填易支付请求网址，商户密钥	填第一步的 密钥。</li>
+<li>注意独角卡后台的易支付微信/易支付支付宝通道，支付场景 选择通用，支付方式选择扫码。</li>
+<li>最后启用收款通道，测试收款是否发货并在云闪付后台中核单金额即可。</li>
+</ol>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/chatgpt-ren-gong-zhi-neng-yu-yan-mo-xing-ping-tai-zhu-ce-jiao-cheng/" class="post-title gt-a-link">
+                    ChatGPT 人工智能语言模型平台注册教程
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/fa-qia-ping-tai-zhi-fu-qu-dao-da-jian-gong-lue/" class="leancloud_visitors" data-flag-title="发卡平台支付渠道搭建攻略">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

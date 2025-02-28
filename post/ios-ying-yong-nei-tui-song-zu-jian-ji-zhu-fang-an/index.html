@@ -1,0 +1,274 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>iOS 应用内推送组件技术方案 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    iOS 应用内推送组件技术方案
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-07-19 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="简述">简述</h2>
+<p>应用内通知是指在应用的界面之内展示的消息，旨在向用户提供提醒，聊天消息或其他实时信息。</p>
+<p>目前App内多个业务实现了应用内通知的功能，例如：一起听、私信以及收藏引导等。</p>
+<p>目前存在一些潜在问题：</p>
+<ol>
+<li>没有统一的视觉组件复用，每次开发需要造轮子或魔改，且造成外观样式的不统一和交互手感的不一致。</li>
+<li>缺乏中心化的整体控制，用于明确业务的优先级和弹出顺序。在后续业务发展中，可能出现多个通知互相争夺的情况。</li>
+</ol>
+<p>本方案旨在提供一套完整的应用内推送能力，使业务方通过简单接口即可使用，并提供完善的扩展能力。同时对所有通知提供初步的控制逻辑，在后续持续迭代。</p>
+<h2 id="流程框架">流程/框架</h2>
+<p>流程如下：<br>
+<img src="https://www.yiios.com/post-images/1730794680350.png" alt="" loading="lazy"></p>
+<p>架构如下：<br>
+<img src="https://www.yiios.com/post-images/1730794672667.png" alt="" loading="lazy"></p>
+<h2 id="视觉组件">视觉组件</h2>
+<p>应用内通知视觉样式由模板决定。业务只需要定义模板中各个部分的内容即可。</p>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1730794661432.png" alt="" loading="lazy"></figure>
+<ol>
+<li>图标（必要）：业务需要展示的图标；</li>
+<li>标题（必要）：用来简述通知的信息；</li>
+<li>文本（必要）：用来描述详细内容的信息；</li>
+</ol>
+<h3 id="事件回调">事件回调</h3>
+<p>目前通知有三个回调时机：</p>
+<ol>
+<li>即将展示：通知在即将上屏展示前，会触发一次回调。业务可以实现此回调来更新最新的信息或者旧BI的曝光事件触发以及撤回此条通知不再展示。</li>
+<li>即将隐藏：通知隐藏由五种事件触发：用户点击通知，用户点击关闭按钮，用户上推通知条出屏幕，展示时间超时被收回，展示时收到了高优先级通知的打断。业务可以实现此回调来上报曝光结束事件，或对业务逻辑进行处理。</li>
+<li>通知被丢弃：受制于频控策略等影响，通知被丢弃，在丢弃时，触发此回调。</li>
+</ol>
+<h2 id="优先级和业务渠道">优先级和业务渠道</h2>
+<p>在通知发起时，需要明确通知的优先级和业务渠道。<br>
+优先级为预先定义好的枚举值，其作用在于处理通知之间的打断关系：</p>
+<ul>
+<li>高优先级的通知会打断目前已经展示的低优先的通知，对屏幕进行抢占。</li>
+<li>而相同优先级的通知，会进入等待池中等待通知的展示。</li>
+<li>低优先级的通知会等待所有的通知消费完成后再进行展示。</li>
+</ul>
+<p>渠道为字符串，扩展字段，目前不做逻辑处理，用以后续对通知业务做细分管控。</p>
+<h2 id="外部注入的控制策略">外部注入的控制策略</h2>
+<p>外部可以实现 ControlProtocol 协议，并将其注入到 Center 中来实现对控制策略的注入。<br>
+目前 ControlProtocol 将实现两个时机：</p>
+<ol>
+<li>业务需要展示新的通知时触发。此时可以对当前通知进行丢弃或对当前等待队列进行排序和剔除。</li>
+<li>通知即将上屏时触发。此次可以对当前通知进行丢弃。</li>
+</ol>
+<h3 id="勿扰状态">勿扰状态</h3>
+<p>当业务需要用户沉浸体验不被打扰时，可以实现勿扰状态的方法，并对勿扰状态进行合理的维护。<br>
+ControlProtocol 协议中有勿扰状态的控制逻辑。在勿扰状态开启时，所有的通知都会被丢弃。</p>
+<h2 id="历史逻辑的处理">历史逻辑的处理</h2>
+<p>在接口层面上和之前通知组件的大致兼容。<br>
+在新的组件完成后，会移除NMPushKit中的NMDyNotification相关类，并对其使用方进行迁移，使 InAppPush 组件可以管控大部分场景。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/ji-yi-ge-ios-wkwebview-wu-fa-diao-shi-de-keng/" class="post-title gt-a-link">
+                    记一个iOS WKWebView无法调试的坑
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/ios-ying-yong-nei-tui-song-zu-jian-ji-zhu-fang-an/" class="leancloud_visitors" data-flag-title="iOS 应用内推送组件技术方案">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

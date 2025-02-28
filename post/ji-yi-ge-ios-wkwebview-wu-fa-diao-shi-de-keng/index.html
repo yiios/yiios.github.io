@@ -1,0 +1,240 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>记一个iOS WKWebView无法调试的坑 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    记一个iOS WKWebView无法调试的坑
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-04-26 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="问题复现">问题复现</h2>
+<p>这一部分在过去的几年一直是没啥问题的，然而上个月（2023年3月），我在某天突然发现safari里面看不到可供调试的远程页面了，一直显示如下提示：无可检查的应用程序。</p>
+<p>这就很坑了，因为没法调试意味着看不到js里面的报错信息，只能靠猜，运行的东西也无法用consle.log来显示，只能alert出来。</p>
+<h2 id="问题解决">问题解决</h2>
+<p>又过了大概一周，实在是受不了无法调试这种状况，于是再次尝试翻出去搜索，结果居然发现有人碰到了同样的问题，最后翻到了解释，</p>
+<p>原文大概是：<code>Across all platforms supportingWKWebVieworJSContext, a new property is available calledisInspectable(inspectablein Objective-C). It defaults tofalse, and you can set it totrueto opt-in to content being inspectable.</code> 也就是某版本更新以后，新增了个isInspectable的属性，而且默认是关闭的。而我电脑上之所以老版本可以调试，新版本迁移后不可以是因为老版本的target platform设置是15,而我的新项目里面设置的是default，于是自动带出16.4的新特性了。</p>
+<p>解决的办法有两种，比较简单粗暴的的可以直接在xcode中project设置里面把Deployment Target中的版本设置为16.4以前的版本。</p>
+<p>如果想设置为更高版本的话，则需要在代码中添加配置项来开启调试,如下:</p>
+<pre><code class="language-Swift">let webConfiguration = WKWebViewConfiguration()
+let webView = WKWebView(frame: .zero, configuration: webConfiguration)
+webView.isInspectable = true
+</code></pre>
+<pre><code class="language-Objective-C">WKWebViewConfiguration *webConfiguration = [WKWebViewConfiguration new];
+WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfiguration];
+webView.inspectable = YES;
+</code></pre>
+<p>很烦，为什么还要解决这些玩意！</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/dang-wo-men-zai-shuo-ke-hu-duan-de-shi-hou-wo-men-zai-shuo-shi-me/" class="post-title gt-a-link">
+                    当我们在说客户端的时候，我们在说什么
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/ji-yi-ge-ios-wkwebview-wu-fa-diao-shi-de-keng/" class="leancloud_visitors" data-flag-title="记一个iOS WKWebView无法调试的坑">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

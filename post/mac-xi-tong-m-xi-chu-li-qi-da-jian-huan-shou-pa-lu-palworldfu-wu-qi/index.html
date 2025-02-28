@@ -1,0 +1,400 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Mac 系统(M 系处理器)搭建幻兽帕鲁(palworld)服务器 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Mac 系统(M 系处理器)搭建幻兽帕鲁(palworld)服务器
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2024-01-24 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <!-- more -->
+<h2 id="环境准备">环境准备</h2>
+<ol>
+<li>下载安装docker，https://www.docker.com/。</li>
+<li>修改 docker desktop 中的 Settings - Resources ，把CPU Limit拉满，Memory Limit 拉到给剩2-3G接近满值，Swap拉满，保存。</li>
+<li>创建一个文件夹，例如：<code>palworld-arm-docker</code>，在里面创建一个空的子文件夹 <code>palworld</code>。</li>
+</ol>
+<h2 id="docker-compose">docker-compose</h2>
+<p>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>docker-compose.yml</code> 文件。<br>
+<code>mem_limit</code>视自己的刚才的<code>Memory Limit</code>调整，比如<code>Memory Limit</code>是14G，那么<code>mem_limit</code>就设定为13G，这样可以在内存泄露严重时自动重启容器。</p>
+<pre><code>version: '3'
+services:
+  pal:
+    image: czy0612/palworld-server
+    restart: always
+    mem_limit: 13g
+    container_name: pal
+    ports:
+      - 8211:8211/udp
+      - 25575:25575/tcp
+    volumes:
+      - ./PalWorldSettings.ini:/home/steam/Steam/steamapps/common/PalServer/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini
+      - ./palworld:/home/steam/Steam/steamapps/common/PalServer/
+</code></pre>
+<h2 id="palgameworldsettings游戏配置">PalGameWorldSettings(游戏配置)</h2>
+<p>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>PalWorldSettings.ini</code> 文件。</p>
+<p>官方文档：https://tech.palworldgame.com/optimize-game-balance<br>
+配置生成器：https://dysoncheng.github.io/PalWorldSettingGenerator/setting.html</p>
+<p>默认配置如下，如何修改可以参考上面两个网页：</p>
+<pre><code>[/Script/Pal.PalGameWorldSettings]
+OptionSettings=(Difficulty=None,DayTimeSpeedRate=1.000000,NightTimeSpeedRate=1.000000,ExpRate=1.000000,PalCaptureRate=1.000000,PalSpawnNumRate=1.000000,PalDamageRateAttack=1.000000,PalDamageRateDefense=1.000000,PlayerDamageRateAttack=1.000000,PlayerDamageRateDefense=1.000000,PlayerStomachDecreaceRate=1.000000,PlayerStaminaDecreaceRate=1.000000,PlayerAutoHPRegeneRate=1.000000,PlayerAutoHpRegeneRateInSleep=1.000000,PalStomachDecreaceRate=1.000000,PalStaminaDecreaceRate=1.000000,PalAutoHPRegeneRate=1.000000,PalAutoHpRegeneRateInSleep=1.000000,BuildObjectDamageRate=1.000000,BuildObjectDeteriorationDamageRate=1.000000,CollectionDropRate=1.000000,CollectionObjectHpRate=1.000000,CollectionObjectRespawnSpeedRate=1.000000,EnemyDropItemRate=1.000000,DeathPenalty=All,bEnablePlayerToPlayerDamage=False,bEnableFriendlyFire=False,bEnableInvaderEnemy=True,bActiveUNKO=False,bEnableAimAssistPad=True,bEnableAimAssistKeyboard=False,DropItemMaxNum=3000,DropItemMaxNum_UNKO=100,BaseCampMaxNum=128,BaseCampWorkerMaxNum=15,DropItemAliveMaxHours=1.000000,bAutoResetGuildNoOnlinePlayers=False,AutoResetGuildTimeNoOnlinePlayers=72.000000,GuildPlayerMaxNum=20,PalEggDefaultHatchingTime=72.000000,WorkSpeedRate=1.000000,bIsMultiplay=False,bIsPvP=False,bCanPickupOtherGuildDeathPenaltyDrop=False,bEnableNonLoginPenalty=True,bEnableFastTravel=True,bIsStartLocationSelectByMap=True,bExistPlayerAfterLogout=False,bEnableDefenseOtherGuildPlayer=False,CoopPlayerMaxNum=4,ServerPlayerMaxNum=32,ServerName=&quot;Default Palworld Server&quot;,ServerDescription=&quot;&quot;,AdminPassword=&quot;123456&quot;,ServerPassword=&quot;&quot;,PublicPort=8211,PublicIP=&quot;&quot;,RCONEnabled=True,RCONPort=25575,Region=&quot;&quot;,bUseAuth=True,BanListURL=&quot;https://api.palworldgame.com/api/banlist.txt&quot;)
+</code></pre>
+<h2 id="运行">运行</h2>
+<ol>
+<li>终端中 cd 到 <code>palworld-arm-docker</code> 文件夹目录下</li>
+<li>拉取 docker 镜像<code>docker-compose pull</code></li>
+<li>运行 <code>docker-compose up -d</code></li>
+<li>等待30秒后 <code>sudo docker logs pal</code><br>
+看到如下信息说明服务器配置好了，马上可以冲了！</li>
+</ol>
+<pre><code>dlopen failed trying to load:
+steamclient.so
+with error:
+steamclient.so: cannot open shared object file: No such file or directory
+[S_API] SteamAPI_Init(): Loaded '/home/steam/.steam/sdk64/steamclient.so' OK.  (First tried local 'steamclient.so')
+CAppInfoCacheReadFromDiskThread took 29 milliseconds to initialize
+Setting breakpad minidump AppID = 2394010
+[S_API FAIL] Tried to access Steam interface SteamUser021 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface SteamFriends017 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface STEAMAPPS_INTERFACE_VERSION008 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface SteamNetworkingUtils004 before SteamAPI_Init succeeded.
+</code></pre>
+<h2 id="网络配置">网络配置</h2>
+<p>如果你能拿到公网ip，看端口映射章节，拿不到公网ip看内网穿透章节。</p>
+<h3 id="端口映射">端口映射</h3>
+<ol>
+<li>路由上给 Mac 终端指定一个ip</li>
+<li>虚拟服务器/端口映射上，配置Mac终端映射端口8211(协议UDP)/25575(协议TCP)</li>
+</ol>
+<h3 id="frp内网穿透">FRP内网穿透</h3>
+<p>FRP教程我这里就不在赘述了，这里使用的是0.52.3版本。下面有一份配置可供参考。</p>
+<p>frps配置参考：</p>
+<pre><code>bindPort = 7001 #{必选} 客户端与该端口建立连接
+transport.tls.enable = true
+
+#身份验证
+auth.method = &quot;token&quot;  #{可选}身份验证方式
+auth.token = &quot;123456&quot; #token设置密码，用于通过身份验证创建连接
+
+#frp服务仪表板配置
+webServer.port = 17300  #{也可自行修改端口}
+webServer.addr = &quot;0.0.0.0&quot; #公网ip或者域名
+webServer.user = &quot;user&quot; #登录用户名{可自行修改}
+webServer.password = &quot;password&quot; #登录密码{可自行修改}
+</code></pre>
+<p>frpc配置参考：</p>
+<pre><code>serverAddr = &quot;114.114.115.115&quot; #填写你的frps服务器
+serverPort = 7001 #填写你的frps服务的端口
+auth.token = &quot;123456&quot;
+transport.tls.enable = true
+
+[[proxies]]
+name = &quot;palworld-ucp&quot;
+type = &quot;udp&quot;
+localIP = &quot;127.0.0.1&quot;
+localPort = 8211
+remotePort = 8211
+
+[[proxies]]
+name = &quot;palworld-rcon&quot;
+type = &quot;tcp&quot;
+localIP = &quot;127.0.0.1&quot;
+localPort = 25575
+remotePort = 25575
+</code></pre>
+<h2 id="游戏运维">游戏运维</h2>
+<h3 id="rcon服务器指令">RCON服务器指令</h3>
+<p>工具：<br>
+https://github.com/gorcon/rcon-cli</p>
+<p>用法示例，12345为之前设置的游戏参数<code>AdminPassword</code>，根据实际情况修改：</p>
+<pre><code>./rcon -a 114.114.115.115:25575 -p 123456
+</code></pre>
+<p>服务器命令表：<br>
+https://tech.palworldgame.com/server-commands</p>
+<h3 id="存档备份">存档备份</h3>
+<h4 id="备份配置">备份配置</h4>
+<p>目前游戏不太稳定，炸档情况偶有发生，所以最好定时备份存档，这样在出问题时可以快速回滚。</p>
+<ol>
+<li>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>back</code> 文件夹。</li>
+<li>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>back.sh</code> 文件（注意按照你<code>palworld-arm-docker</code> 文件夹的实际路径对脚本中的路径进行修改）：</li>
+</ol>
+<pre><code>#!/bin/bash
+
+# 备份文件名
+t=$(date +%Y-%m-%d-%H-%M-%S).zip
+echo $t
+
+# 备份文件存放路径，此处注意
+zip_path=/Users/Admin/Server/palworld-arm-docker/back/$t
+
+# 压缩指定目录为zip
+zip -r -q $zip_path /Users/Admin/Server/palworld-arm-docker/palworld/Pal/Saved/*
+
+# 遍历并删除3天之前的文件
+back_path=/Users/Admin/Server/palworld-arm-docker/back/
+
+# 获取当前时间戳
+current_time=$(date +%s)
+
+# 遍历back路径下的文件
+for file in $back_path*
+do
+    # 检查文件的修改时间
+    modified_time=$(stat -f %m $file)
+    
+    # 计算文件的时间差（以秒为单位）
+    time_diff=$((current_time - modified_time))
+    
+    # 判断文件是否超过3天未修改
+    if [ $time_diff -gt $((3 * 24 * 60 * 60)) ]
+    then
+        # 删除文件
+        rm $file
+    fi
+done
+</code></pre>
+<ol start="3">
+<li>在终端中，输入命令 <code>crontab -e</code> 开始编辑定时任务，在编辑界面中按<code>i</code>进入输入状态，输入下面的指令（注意按照你<code>palworld-arm-docker</code> 文件夹的实际路径对脚本中的路径进行修改）</li>
+</ol>
+<pre><code>*/30 * * * * /bin/bash /Users/Admin/Server/palworld-arm-docker/back.sh
+</code></pre>
+<p>按<code>esc</code>退出输入状态，输入<code>:wq</code>保存文件并退出。如果此时有弹窗提示是否同意，点击同意。<br>
+系统会在每个小时的0分和30分钟备份一次存档。</p>
+<h4 id="回滚存档">回滚存档</h4>
+<p>一旦发生不幸，可以开始回滚存档。</p>
+<ol>
+<li>终端 <code>cd</code> 进入<code>palworld-arm-docker</code>文件夹下，停止 docker 容器<code>docker-compose down</code></li>
+<li>将之前的备份解压，确认成功解压后</li>
+<li>进入 <code>/Users/Admin/Server/palworld-arm-docker/palworld/Pal/Saved/</code> 目录下，压缩备份当前的坏存档，之后删除<code>Saved</code>文件夹下的所有文件。</li>
+<li>将之前解压好的备份移到<code>Saved</code>文件夹下</li>
+<li>终端中启动 docker 容器<code>docker-compose up -d</code></li>
+</ol>
+<h3 id="更新版本">更新版本</h3>
+<p>此docker镜像有自动更新机制，如果服务端有新的更新，会在 docker 容器启动时自动更新游戏。</p>
+<ol>
+<li>终端 <code>cd</code> 进入<code>palworld-arm-docker</code>文件夹下，停止 docker 容器<code>docker-compose down</code></li>
+<li>终端中启动 docker 容器<code>docker-compose up -d</code></li>
+<li>使用 <code>sudo docker logs pal</code> 查看更新进度和是否启动部署成功</li>
+</ol>
+<h2 id="补充">补充</h2>
+<ol>
+<li>设置ServerPassword的话，无法直接输入ip+端口加入房间，必须要曲线救国，最好别设置。</li>
+<li>帕鲁服务端目前非常吃配置，机器内存不建议低于16G。</li>
+<li>帕鲁服务端目前非常吃配置，frps服务器的带宽也很重要，想流畅不卡最少一个在线用户要分到1M的带宽。</li>
+<li>此docker容器的root密码为：steamcmd</li>
+</ol>
+<p>看到最后麻烦给我点个赞！</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/ios-live-activityling-dong-dao-kai-fa-wen-ti-pai-cha/" class="post-title gt-a-link">
+                    iOS Live Activity(灵动岛)开发问题排查
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/mac-xi-tong-m-xi-chu-li-qi-da-jian-huan-shou-pa-lu-palworldfu-wu-qi/" class="leancloud_visitors" data-flag-title="Mac 系统(M 系处理器)搭建幻兽帕鲁(palworld)服务器">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

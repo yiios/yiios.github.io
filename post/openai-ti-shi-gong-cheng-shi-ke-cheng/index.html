@@ -1,0 +1,600 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>面向开发者的 ChatGPT 提示工程 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    面向开发者的 ChatGPT 提示工程
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2023-05-04 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="1-提示指南">1. 提示指南</h2>
+<ol>
+<li>写出清晰具体的说明</li>
+<li>给模型“思考”的时间</li>
+</ol>
+<h3 id="写出清晰具体的说明">写出清晰具体的说明</h3>
+<h4 id="策略1使用分隔符清楚的指示输入的不同部分">策略1：使用分隔符清楚的指示输入的不同部分</h4>
+<p>分隔符的形式可以很随意：</p>
+<pre><code>```, &quot;&quot;&quot;, &lt; &gt;, `&lt;tag&gt; &lt;/tag&gt;`, `:`
+</code></pre>
+<p>借助分隔符对抗 AI 提示语注入：</p>
+<pre><code>提示语：
+Summarize the text delimited by triple backticks \ 
+into a single sentence.
+```{text}```
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1683184765633.jpg" alt="" loading="lazy"></figure>
+<h4 id="策略2要求结构化输出">策略2：要求结构化输出</h4>
+<p>结构化输出类型：</p>
+<ul>
+<li>JSON，HTML</li>
+</ul>
+<p>应用场景：例如智能助手，假设我们是一个音乐App，我们希望理解用户的自然语言想播放什么歌曲</p>
+<pre><code>提示语：
+Generate a list of three made-up book titles along \ 
+with their authors and genres. 
+Provide them in JSON format with the following keys: 
+book_id, title, author, genre.
+</code></pre>
+<p>输入样例：</p>
+<pre><code class="language-json">[
+  {
+    &quot;book_id&quot;: 1,
+    &quot;title&quot;: &quot;The Lost City of Zorath&quot;,
+    &quot;author&quot;: &quot;Aria Blackwood&quot;,
+    &quot;genre&quot;: &quot;Fantasy&quot;
+  },
+  {
+    &quot;book_id&quot;: 2,
+    &quot;title&quot;: &quot;The Last Survivors&quot;,
+    &quot;author&quot;: &quot;Ethan Stone&quot;,
+    &quot;genre&quot;: &quot;Science Fiction&quot;
+  },
+  {
+    &quot;book_id&quot;: 3,
+    &quot;title&quot;: &quot;The Secret of the Haunted Mansion&quot;,
+    &quot;author&quot;: &quot;Lila Rose&quot;,
+    &quot;genre&quot;: &quot;Mystery&quot;
+  }
+]
+</code></pre>
+<h4 id="策略3检查条件是否满足-检查完成任务所需的假设">策略3：检查条件是否满足 检查完成任务所需的假设</h4>
+<p>可以首先检查一些任务假设，如果不满足，则指示停止处理。<br>
+还可以预设在出现不满足情况时，应该如何处理。</p>
+<p>在下面的示例中，尝试归纳 text 中的步骤，按照结构化输出，如果不存在可被归纳的步骤，则输出<code>No steps provided.</code>：</p>
+<pre><code class="language-python">text_good = &quot;Making a cup of tea is easy! First, you need to get some \ 
+water boiling. While that's happening, \ 
+grab a cup and put a tea bag in it. Once the water is \ 
+hot enough, just pour it over the tea bag. \ 
+Let it sit for a bit so the tea can steep. After a \ 
+few minutes, take out the tea bag. If you \ 
+like, you can add some sugar or milk to taste. \ 
+And that's it! You've got yourself a delicious \ 
+cup of tea to enjoy.&quot;
+
+
+text_bad = &quot;
+The sun is shining brightly today, and the birds are \
+singing. It's a beautiful day to go for a \ 
+walk in the park. The flowers are blooming, and the \ 
+trees are swaying gently in the breeze. People \ 
+are out and about, enjoying the lovely weather. \ 
+Some are having picnics, while others are playing \ 
+games or simply relaxing on the grass. It's a \ 
+perfect day to spend time outdoors and appreciate the \ 
+beauty of nature.
+&quot;
+
+prompt = &quot;
+You will be provided with text delimited by triple quotes. 
+If it contains a sequence of instructions, \ 
+re-write those instructions in the following format:
+
+Step 1 - ...
+Step 2 - …
+…
+Step N - …
+
+If the text does not contain a sequence of instructions, \ 
+then simply write \&quot;No steps provided.\&quot;
+
+\&quot;\&quot;\&quot;{text}\&quot;\&quot;\&quot;
+&quot;
+
+</code></pre>
+<p>在 text_bad 中，因为不存在可归纳的步骤，所以根据 <code>prompt</code> 的要求，对应的结果是：<code>No steps provided.</code></p>
+<h4 id="策略4少量训练提示">策略4：少量训练提示</h4>
+<p>在执行任务之前，提供成功执行任务的示例。</p>
+<p>在下面的例子中，我们让模型以一致的风格回答问题。其中有两个角色，&quot;孩子&quot;和&quot;祖母&quot;，我们期望模型以&quot;祖母&quot;的风格来回答问题，并提供了一个示例：</p>
+<pre><code>prompt = &quot;
+Your task is to answer in a consistent style.
+
+&lt;child&gt;: Teach me about patience.
+
+&lt;grandparent&gt;: The river that carves the deepest \ 
+valley flows from a modest spring; the \ 
+grandest symphony originates from a single note; \ 
+the most intricate tapestry begins with a solitary thread.
+
+&lt;child&gt;: Teach me about resilience.
+&quot;
+
+</code></pre>
+<p>模型返回的 <code>response</code>：</p>
+<blockquote>
+<p>&lt; grandparent &gt;: Resilience is like a tree that bends with the wind but never breaks. It is the ability to bounce back from adversity and keep moving forward, even when things get tough. Just like a tree that grows stronger with each storm it weathers, resilience is a quality that can be developed and strengthened over time.</p>
+</blockquote>
+<h3 id="给模型思考的时间">给模型“思考”的时间</h3>
+<p>如果模型急于给出最终结论，就容易出现推理错误。最好在模型提供最终的答案之前，应该重新构建请求，引入相关的链、序列。<br>
+如果让模型处理一个太复杂的任务，而且用少量的词汇，那么模型会猜测结果，不一定能提供正确的答案。</p>
+<p>在上面的情形中，我们可以指示模型花更多的时间思考问题，这将花费更多的计算力在解决问题上，从而得出更高质量的答案。</p>
+<h4 id="策略1指定完成任务所需的步骤">策略1：指定完成任务所需的步骤</h4>
+<p>示例：</p>
+<pre><code>text = &quot;
+In a charming village, siblings Jack and Jill set out on \ 
+a quest to fetch water from a hilltop \ 
+well. As they climbed, singing joyfully, misfortune \ 
+struck—Jack tripped on a stone and tumbled \ 
+down the hill, with Jill following suit. \ 
+Though slightly battered, the pair returned home to \ 
+comforting embraces. Despite the mishap, \ 
+their adventurous spirits remained undimmed, and they \ 
+continued exploring with delight.
+&quot;
+# example 1
+prompt_1 = &quot;
+Your task is to perform the following actions: 
+1 - Summarize the following text delimited by 
+  &lt;&gt; with 1 sentence.
+2 - Translate the summary into French.
+3 - List each name in the French summary.
+4 - Output a json object that contains the 
+  following keys: french_summary, num_names.
+
+Use the following format:
+Text: &lt;text to summarize&gt;
+Summary: &lt;summary&gt;
+Translation: &lt;summary translation&gt;
+Names: &lt;list of names in Italian summary&gt;
+Output JSON: &lt;json with summary and num_names&gt;
+
+Text: &lt;{text}&gt;
+&quot;
+
+prompt_2 = &quot;
+Your task is to perform the following actions: 
+1 - Summarize the following text delimited by 
+  &lt;&gt; with 1 sentence.
+2 - Translate the summary into French.
+3 - List each name in the French summary.
+4 - Output a json object that contains the 
+  following keys: french_summary, num_names.
+
+Use the following format:
+Text: &lt;text to summarize&gt;
+Summary: &lt;summary&gt;
+Translation: &lt;summary translation&gt;
+Names: &lt;list of names in Italian summary&gt;
+Output JSON: &lt;json with summary and num_names&gt;
+
+Text: &lt;{text}&gt;
+&quot;
+
+</code></pre>
+<p>在这个实例中，我们使用了两种略有差别的<code>prompt</code>。</p>
+<p><code>prompt_1</code>指示模型用4个步骤处理 <code>text</code> 中的文本：</p>
+<ol>
+<li>将 <code>text</code> 总结为一句话摘要</li>
+<li>将这句摘要翻译为法语</li>
+<li>用法语列出每个名字</li>
+<li>输出一个包含以下 <code>key</code> 的 <code>JSON</code> 对象：<code>french_summary</code>(法语摘要)、<code>num_names</code>(名字数量)</li>
+</ol>
+<p><code>prompt_2</code>和<code>prompt_1</code>一样指示模型用同样的4个步骤处理 <code>text</code> 中的文本，但对输出的内容进行了格式约束，这有助于在代码层面进行处理：</p>
+<ul>
+<li><code>Text</code> - 文本：&lt;要总结的文本&gt;</li>
+<li><code>Summary</code> - 摘要：&lt;摘要&gt;</li>
+<li><code>Translation</code> - 翻译：&lt;摘要翻译&gt;</li>
+<li><code>Names</code> - 名称：&lt;摘要中的名字列表&gt;</li>
+<li><code>Output JSON</code> - 输出JSON：&lt;带有摘要和num_names的json&gt;</li>
+</ul>
+<pre><code>Completion for prompt 1:
+
+# 第一步 总结为一句话摘要
+Two siblings, Jack and Jill, go on a quest to fetch water from a hilltop well, but misfortune strikes as they both fall down the hill, yet they return home slightly battered but with their adventurous spirits undimmed.
+
+# 第二步 将上面的摘要翻译为法语
+Deux frères et sœurs, Jack et Jill, partent en quête d'eau d'un puits au sommet d'une colline, mais ils tombent tous les deux et retournent chez eux légèrement meurtris mais avec leur esprit d'aventure intact. 
+
+# 第三步 用法语列出每个名字。
+# 这里有个缺陷，即 Noms 是法语中名字的意思，而不是英语，结合上下文的语境中理解，我们希望 key 为英文。
+Noms: Jack, Jill.
+
+# 第四步 输出 json 对象
+{
+&quot;french_summary&quot;: &quot;Deux frères et sœurs, Jack et Jill, partent en quête d'eau d'un puits au sommet d'une colline, mais ils tombent tous les deux et retournent chez eux légèrement meurtris mais avec leur esprit d'aventure intact.&quot;,
+&quot;num_names&quot;: 2
+}
+
+######
+
+Completion for prompt 2:
+# 摘要
+Summary: Jack and Jill go on a quest to fetch water, but misfortune strikes and they tumble down the hill, returning home slightly battered but with their adventurous spirits undimmed. 
+# 翻译
+Translation: Jack et Jill partent en quête d'eau, mais un malheur frappe et ils tombent de la colline, rentrant chez eux légèrement meurtris mais avec leurs esprits aventureux intacts.
+# 名称
+Names: Jack, Jill
+# 输出 JSON
+Output JSON: {&quot;french_summary&quot;: &quot;Jack et Jill partent en quête d'eau, mais un malheur frappe et ils tombent de la colline, rentrant chez eux légèrement meurtris mais avec leurs esprits aventureux intacts.&quot;, &quot;num_names&quot;: 2}
+
+
+</code></pre>
+<h4 id="策略2指示模型在匆忙做出结论之前思考解决方案">策略2：指示模型在匆忙做出结论之前思考解决方案</h4>
+<p>明确指示模型在给出结论之前推理出自己的解决方案，而不是直接给出答案，前者相比后者将获得更好的结果。<br>
+在从模型中获得了错误的答案时，需要关注是否提供了模型足够的时间去逐步思考问题。</p>
+<p>在下面的示例中，模型得出了一个错误的结论：</p>
+<pre><code>prompt = &quot;
+Determine if the student's solution is correct or not.
+
+Question:
+I'm building a solar power installation and I need \
+ help working out the financials. 
+- Land costs $100 / square foot
+- I can buy solar panels for $250 / square foot
+- I negotiated a contract for maintenance that will cost \ 
+me a flat $100k per year, and an additional $10 / square \
+foot
+What is the total cost for the first year of operations 
+as a function of the number of square feet.
+
+Student's Solution:
+Let x be the size of the installation in square feet.
+Costs:
+1. Land cost: 100x
+2. Solar panel cost: 250x
+3. Maintenance cost: 100,000 + 100x
+Total cost: 100x + 250x + 100,000 + 100x = 450x + 100,000
+&quot;
+
+# 这个答案是错误的。
+# 因为学生的解决方案虽然步骤清晰，看似正确，但是他搞错了维护成本，应该为 10x，而不是 100x 
+response = &quot;The student's solution is correct.&quot;
+
+</code></pre>
+<p>可以通过让模型先计算自己的解决方案，然后再比较学生的解决方案和模型自己的解决方案的差异，从而修正模型错误的回答：</p>
+<pre><code>
+prompt = &quot;
+# 向模型说明了任务，要得出结论 ，需要通过以下步骤来进行
+# 首先让模型自己先解决这个问题
+# 然后比较模型自己的解决方案和学生解决方案，从而评估学生的解决方案是否正确。在模型自己解决问题之前，不要决定学生的解决方案是否正确。
+Your task is to determine if the student's solution \
+is correct or not.
+To solve the problem do the following:
+- First, work out your own solution to the problem. 
+- Then compare your solution to the student's solution \ 
+and evaluate if the student's solution is correct or not. 
+Don't decide if the student's solution is correct until 
+you have done the problem yourself.
+
+# 一定要清晰的表示，确保是模型自己解决问题
+# 所以使用下面的格式来约束
+Use the following format:
+# 问题
+Question:
+\\\
+question here
+\\\
+# 学生的解决方案
+Student's solution:
+\\\
+student's solution here
+\\\
+# 模型自己的解决方案
+Actual solution:
+\\\
+steps to work out the solution and your solution here
+\\\
+# 判断两个方案是否一致，输出学生的方案正确与否
+Is the student's solution the same as actual solution \
+just calculated:
+\\\
+yes or no
+\\\
+Student grade:
+\\\
+correct or incorrect
+\\\
+
+# 要处理的问题之前保持一致
+Question:
+\\\
+I'm building a solar power installation and I need help \
+working out the financials. 
+- Land costs $100 / square foot
+- I can buy solar panels for $250 / square foot
+- I negotiated a contract for maintenance that will cost \
+me a flat $100k per year, and an additional $10 / square \
+foot
+What is the total cost for the first year of operations \
+as a function of the number of square feet.
+\\\
+Student's solution:
+\\\
+Let x be the size of the installation in square feet.
+Costs:
+1. Land cost: 100x
+2. Solar panel cost: 250x
+3. Maintenance cost: 100,000 + 100x
+Total cost: 100x + 250x + 100,000 + 100x = 450x + 100,000
+\\\
+Actual solution:
+&quot;
+
+
+response = &quot;
+# 模型先进行了自己的计算
+Let x be the size of the installation in square feet.
+
+Costs:
+1. Land cost: 100x
+2. Solar panel cost: 250x
+3. Maintenance cost: 100,000 + 10x
+
+Total cost: 100x + 250x + 100,000 + 10x = 360x + 100,000
+
+# 再和学生的方案进行对比，得出结论和模型自己计算的方案不一致
+Is the student's solution the same as actual solution just calculated:
+No
+
+# 最后得出结论：学生的方案为不正确
+Student grade:
+Incorrect
+&quot;
+</code></pre>
+<p>通过要求模型进行计算，并将任务分解为具体的步骤，给了模型更多的时间来思考，从而使模型的结论更准确。</p>
+<h3 id="模型的局限性">模型的局限性</h3>
+<p>在使用大语言模型时，了解下面的限制非常重要：</p>
+<h4 id="幻觉-一本正经的胡说八道">幻觉 - 一本正经的胡说八道</h4>
+<p>模型在训练过程中输入大量的知识，但模型并没有完全记住所有的训练知识。所以模型不能准确认知他的知识边界，即模型无法判断哪些知识是自己不知道的。</p>
+<p>所以在回答一些不常见的问题时，会编造貌似合理，但实际上不正确的内容。这些虚构的内容被称为<code>幻觉</code>。</p>
+<p>在下面的示例中，模型从真实的牙刷公司中创造了虚假的产品名称描述：</p>
+<pre><code># 让模型输出关于 Boie 的 AeroGlide 超薄智能牙刷的信息
+prompt = &quot;
+Tell me about AeroGlide UltraSlim Smart Toothbrush by Boie
+&quot;
+
+# 模型输出了一个产品描述，看似真实，但实际这款牙刷并不存在。
+response = &quot;
+The AeroGlide UltraSlim Smart Toothbrush by Boie is a high-tech toothbrush that uses advanced sonic technology to provide a deep and thorough clean. It features a slim and sleek design that makes it easy to hold and maneuver, and it comes with a range of smart features that help you optimize your brushing routine.
+
+One of the key features of the AeroGlide UltraSlim Smart Toothbrush is its advanced sonic technology, which uses high-frequency vibrations to break up plaque and bacteria on your teeth and gums. This technology is highly effective at removing even the toughest stains and buildup, leaving your teeth feeling clean and refreshed.
+
+In addition to its sonic technology, the AeroGlide UltraSlim Smart Toothbrush also comes with a range of smart features that help you optimize your brushing routine. These include a built-in timer that ensures you brush for the recommended two minutes, as well as a pressure sensor that alerts you if you're brushing too hard.
+
+Overall, the AeroGlide UltraSlim Smart Toothbrush by Boie is a highly advanced and effective toothbrush that is perfect for anyone looking to take their oral hygiene to the next level. With its advanced sonic technology and smart features, it provides a deep and thorough clean that leaves your teeth feeling fresh and healthy.
+&quot;
+</code></pre>
+<p>需要我们使用课程中的一些技巧，避免在使用过程中模型出现<code>幻觉</code>。</p>
+<h4 id="减少幻觉">减少幻觉</h4>
+<ol>
+<li>通过要求模型首先找到相关的引用</li>
+<li>然后要求基于这些引用来回答问题</li>
+</ol>
+<h2 id="2-迭代">2. 迭代</h2>
+<blockquote>
+<p>待更新</p>
+</blockquote>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/fa-qia-ping-tai-zhi-fu-qu-dao-da-jian-gong-lue/" class="post-title gt-a-link">
+                    发卡平台支付渠道搭建攻略
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/openai-ti-shi-gong-cheng-shi-ke-cheng/" class="leancloud_visitors" data-flag-title="面向开发者的 ChatGPT 提示工程">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

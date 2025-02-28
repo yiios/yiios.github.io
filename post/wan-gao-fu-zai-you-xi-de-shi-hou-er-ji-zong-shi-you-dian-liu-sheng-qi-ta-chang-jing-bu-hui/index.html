@@ -1,0 +1,260 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>玩高负载游戏的时候耳机总是有电流声，其他场景不会 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    玩高负载游戏的时候耳机总是有电流声，其他场景不会
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2024-06-16 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="问题分析">问题分析：</h2>
+<p>除非是蓝牙等无线耳机，不然都会有电流声。<br>
+打绝地求生时，耳机有一个很明显的底噪。如果在做其他事情或者玩轻度负载的游戏时则不会出现。<br>
+我对相关的硬件进行了排查，更换了主板声卡耳机音箱等部件，也查了一些资料，发现这个电流声大概率是显卡cpu高负载时的产生的共地噪声，一般你用3dmark跑分时应该也能听到。</p>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1730792748511.png" alt="" loading="lazy"></figure>
+<h2 id="解决方案">解决方案：</h2>
+<p>解决办法有三个：</p>
+<ol>
+<li>
+<p>买一个3.5mm的音频共地隔离器。价格在10-20元，耳机孔接隔离器，耳机接隔离器的另一端。优势是价格便宜，劣势是会增加阻抗，劣化音质，需要把声音拉的很大才能听到声音，而麦克风可能还是被噪声污染的。(实测可行)<br>
+<img src="https://www.yiios.com/post-images/1730792764760.jpg" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>买一个usb独立声卡，再买一个usb隔离器。价格加一起可能在100元起步，隔离器看声卡什么水平，一般的就买几十块的不支持480M的usb隔离器，价格几十元。声卡比较好的话，选拓品的hs01或者hs02，隔离器价格在三五百块。优势是效果好，连同耳麦一块解决共地噪声，缺点是钱包得顶住。(实测可行)<br>
+<img src="https://www.yiios.com/post-images/1730792844205.png" alt="" loading="lazy"><br>
+<img src="https://www.yiios.com/post-images/1730792884802.jpg" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>买一个usb独立声卡，再买一个PCI-E转usb扩展卡，要选外插独立供电的那种。价格100元以内。优点便宜，如果有效果，则连同耳麦一块解决共地噪声，缺点是效果需要实测，不一定能解决，而且这个方案不支持笔记本。(实测有一定降噪效果，但不能完全消除)</p>
+</li>
+</ol>
+<h2 id="类似案例">类似案例：</h2>
+<p>为什么吃鸡有电流声？？？<a href="https://tieba.baidu.com/p/8887759698">https://tieba.baidu.com/p/8887759698</a><br>
+耳机电流问题！<a href="https://tieba.baidu.com/p/8869999164">https://tieba.baidu.com/p/8869999164</a><br>
+关于bose qc20耳机的使用。电流声。<a href="https://ngabbs.com/read.php?tid=37798235">https://ngabbs.com/read.php?tid=37798235</a><br>
+​为什么只有玩绝地时耳机有电流声<a href="https://ngabbs.com/read.php?tid=19964098">https://ngabbs.com/read.php?tid=19964098</a></p>
+<h2 id="参考资料">参考资料：</h2>
+<p>音频系统的接地环路噪音问题<a href="https://www.bilibili.com/video/BV1jF411x75i/">https://www.bilibili.com/video/BV1jF411x75i/</a><br>
+降噪神器：小小音频隔离器快速去除电流噪声！！#导播之家 #直播技巧 #音频隔离器<a href="https://www.bilibili.com/video/BV15A4m137DU/">https://www.bilibili.com/video/BV15A4m137DU/</a><br>
+【JAVE】打游戏？买什么声卡？平价游戏音频产品综合推荐<a href="https://www.bilibili.com/video/BV1uF4m1T7bD/">https://www.bilibili.com/video/BV1uF4m1T7bD/</a><br>
+PCHIFI里USB隔离的原理究竟是？<a href="https://www.chiphell.com/thread-2561821-1-1.html">https://www.chiphell.com/thread-2561821-1-1.html</a><br>
+[破事氵] USB隔离器(Topping HS01)居然真的有用 <a href="https://nga.178.com/read.php?tid=34425455">https://nga.178.com/read.php?tid=34425455</a><br>
+[数字信号]-关于USB信号的隔离方法探讨<a href="https://github.com/emoestudio/eEEExplore-2023/issues/18">https://github.com/emoestudio/eEEExplore-2023/issues/18</a><br>
+ISOUSB211 Development Board - USB 2.0 High-Speed (480 Mbps) Galvanic Isolator.<a href="https://notabug.org/niconiconi/isousb211">https://notabug.org/niconiconi/isousb211</a><br>
+ISOUSB211  支持低速、高速和全速的低发射隔离式 USB 中继器<a href="https://www.ti.com.cn/product/cn/ISOUSB211">https://www.ti.com.cn/product/cn/ISOUSB211</a><br>
+HS02 说明书<a href="https://dl.topping.audio/usermanual/hs02.pdf">https://dl.topping.audio/usermanual/hs02.pdf</a><br>
+MEASUREMENTS: Topping HS01 - USB 2.0 Isolator &amp; Ground Loop Eliminator (and a listen to Santana's &quot;Blessings and Miracles&quot;)<a href="https://archimago.blogspot.com/2022/03/measurements-topping-hs01-usb-20.html">https://archimago.blogspot.com/2022/03/measurements-topping-hs01-usb-20.html</a></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/chatgpt-bei-feng-shen-su-jiao-cheng/" class="post-title gt-a-link">
+                    ChatGPT被封申诉教程
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/wan-gao-fu-zai-you-xi-de-shi-hou-er-ji-zong-shi-you-dian-liu-sheng-qi-ta-chang-jing-bu-hui/" class="leancloud_visitors" data-flag-title="玩高负载游戏的时候耳机总是有电流声，其他场景不会">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

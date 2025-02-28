@@ -1,0 +1,321 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>iOS 高性能页面置灰技术方案 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    iOS 高性能页面置灰技术方案
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2023-02-16 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="全局置灰实现">全局置灰实现：</h2>
+<p>思路: 给视图加上饱和度为0的滤镜。即 window 的 layer 上设置 filters。</p>
+<ol>
+<li>生成CAFilter 颜色饱和度滤镜</li>
+</ol>
+<pre><code>CAFilter *filter = [CAFilter filterWithName：colorSaturate];
+</code></pre>
+<ol start="2">
+<li>设置饱和度为0</li>
+</ol>
+<pre><code>[filter inputAmount:0];
+</code></pre>
+<ol start="3">
+<li>赋值给 window (此处可以替换为keywindow)</li>
+</ol>
+<pre><code>[NMIoc_App appDelegate].window.layer.filters = @[filter];
+</code></pre>
+<h2 id="部分页面置灰实现">部分页面置灰实现：</h2>
+<ol>
+<li>在App启动时通过配置中心获取执行黑/白名单模式，以及页面黑名单和页面白名单</li>
+<li>Hook <code>viewWillAppear</code> 和 <code>viewDidDisappear</code>，判断是否处于命中页面</li>
+<li><code>viewWillAppear</code> 设置 window 的滤镜</li>
+<li><code>viewDidDisappear</code> 移除 window 滤镜</li>
+</ol>
+<blockquote>
+<p>不把饱和度滤镜加 window 上的话，可能会导致首屏 <code>tabbar</code> 等元素是彩色的。</p>
+</blockquote>
+<p>实现的细节：</p>
+<ol>
+<li>App前后台切换，需要更新滤镜状态</li>
+<li>配置变更时更新配置</li>
+</ol>
+<h2 id="配置数据样例">配置数据样例</h2>
+<h3 id="缺省配置">缺省配置</h3>
+<pre><code>[
+    {
+        &quot;type&quot;:&quot;colorSaturateZero&quot;,
+        &quot;strategy&quot;:&quot;none&quot;,
+        &quot;startTime&quot;:1234567890,//单位毫秒
+        &quot;endTime&quot;:1234567890//单位毫秒
+    }
+]
+</code></pre>
+<h3 id="全局配置">全局配置</h3>
+<pre><code>[
+    {
+        &quot;type&quot;:&quot;colorSaturateZero&quot;,
+        &quot;strategy&quot;:&quot;global&quot;,
+        &quot;startTime&quot;:1234567890,
+        &quot;endTime&quot;:1234567890
+    }
+]
+</code></pre>
+<h3 id="白名单模式">白名单模式</h3>
+<pre><code>[
+    {
+        &quot;type&quot;:&quot;colorSaturateZero&quot;,
+        &quot;strategy&quot;:&quot;whitelist&quot;,
+        &quot;startTime&quot;:1234567890,
+        &quot;endTime&quot;:1234567890,
+        &quot;iOSIdentify&quot;:[
+            &quot;需要置灰的页面A&quot;,
+            &quot;需要置灰的页面B&quot;
+        ],
+        &quot;androidIdentify&quot;:[
+            &quot;需要置灰的页面A&quot;,
+            &quot;需要置灰的页面B&quot;
+        ]
+    }
+]
+</code></pre>
+<h3 id="黑名单模式">黑名单模式</h3>
+<pre><code>[
+    {
+        &quot;type&quot;:&quot;colorSaturateZero&quot;,
+        &quot;strategy&quot;:&quot;blacklist&quot;,
+        &quot;startTime&quot;:1234567890,
+        &quot;endTime&quot;:1234567890,
+        &quot;iOSIdentify&quot;:[
+            &quot;不需要置灰的页面A&quot;,
+            &quot;不需要置灰的页面B&quot;
+        ],
+        &quot;androidIdentify&quot;:[
+            &quot;不需要置灰的页面A&quot;,
+            &quot;不需要置灰的页面B&quot;
+        ]
+    }
+]
+</code></pre>
+<h2 id="特殊处理">特殊处理</h2>
+<h3 id="音乐-ipad-端页面">*音乐 iPad 端页面</h3>
+<ol>
+<li>大部分分屏页面都没有 <code>viewWillAppear</code> 和 <code>viewDidDisappear</code> 事件，需要结合监听 <code>kNavigationPageChangedNotification</code> 通知来获取页面变动事件。</li>
+<li>需要额外 Hook <code>View</code>的生命周期。在通知产生后核对顶部视图的状态，如果命中置灰逻辑，则将VC对应的<code>View</code>记录下来，在Hook <code>View</code>的生命周期时对记录的<code>View</code>进行置灰处理。</li>
+<li>分屏页面的出现导致无法使用<code>windows</code>滤镜，会污染被部分展示的白名单页面。所以只能设置 <code>VC</code> 对应 <code>view</code> 的滤镜。</li>
+</ol>
+<h3 id="广告页的异常情况">广告页的异常情况</h3>
+<p>在*音乐iPhone端中，广告视图是另外创建的<code>window</code>，需要覆盖广告<code>window</code>的话，还需要Hook <code>UIWindow</code> <code>makeKeyAndVisible</code>来达到对新展示的<code>window</code>的覆盖效果。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/live-activityling-dong-dao-wwdc-zong-jie/" class="post-title gt-a-link">
+                    Live Activity(灵动岛) WWDC 总结
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/ios-gao-xing-neng-ye-mian-zhi-hui-ji-zhu-fang-an/" class="leancloud_visitors" data-flag-title="iOS 高性能页面置灰技术方案">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>当我们在说客户端的时候，我们在说什么 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    当我们在说客户端的时候，我们在说什么
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-04-14 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <p>传统意义上的客户端（Client）是从PC开发时代产生的概念，一般是指一个运行在pc上的程序，通过网络通讯和服务器进行交互；比如我们可以称魔兽世界的游戏程序为客户端<br>
+随着移动互联网的崛起，客户端逐渐变成了代指app的名词，比如手机QQ Android / iOS版，可以被称为客户端</p>
+<p>好了，现在我们来说说，从技术上看，客户端（app）到底是什么</p>
+<p>关于原理<br>
+进程上看，多数app都只有一个进程——界面绘制，数据处理，都在这一个进程里</p>
+<p>最常见的工作模型是： 一个消息泵（或称一个消息分发循环），在有消息来的时候，进行分发，各个模块在回调里进行处理</p>
+<p>所以接触过iOS / Android编程模型的同学会很容易地发现，你的大部分业务代码是填充在系统给的回调里的，执行完毕之后控制权会回到消息泵手里，iOS 叫 runloop，Android 叫 looper</p>
+<p>好的，到这里我们先大致了解一下app的工作模型，暂时不涉及平台细节；</p>
+<p>这里特别想说的是，知识的理解有两个层面</p>
+<p>一个层面是逻辑性的<br>
+另一个层面是知识性的<br>
+app的工作原理属于第一个层面的东西，这是我们今天想着重讲的，至于哪个api是干什么事情的，属于第二个层面，这个领域的知识不用急，用到的时候自然有文档，会随着一个人的经验不断的积累，慢慢来就好</p>
+<p>刚刚只讲了原理，那么我们来谈谈app领域的具体的技术<br>
+关于技术<br>
+Native开发：一般是指用原生语言直接进行开发（界面绘制，数据处理等），iOS一般多用objective c，swift； Android 一般多用java，kotlin</p>
+<p>Hybrid开发：一般是指用使用 html + js + css进行界面绘制，数据流动一部分在js内部，一部分在native层面；为什么能这么做？简单地说，iOS / Android系统都提供了webview这个控件，而且都能够在要打开什么链接，要执行什么js函数的时候，给native层一个回调，这就为数据交换提供了基础</p>
+<p>跨平台开发：主要想要解决两个平台（iOS / Android）使用统一的方式处理交互逻辑 + 数据逻辑，比如Flutter就是这样的方案，flutter提供了一种中间语言Dart——开发者可以使用dart在iOS Android两个平台进行开发（而不是oc / swift， java / kotlin），当然想象一下，要做到这一点，dart运行时的底层一定做了和平台的接驳——类似jvm能同时在linux 和 windows上提供java运行能力</p>
+<p>Native开发一般适用于对体验要求较高的场景，因为它能够给程序员对程序性能最大限度的控制权</p>
+<p>Hybrid开发 / 跨平台开发，其实有些交集，优势一方面在于一定的灵活性一方面在效率，比如，两端都用同一个hybrid / flutter页面，那改一下就能有两端的收益；一个公司可以找少量的native工程师快速搭建好基础，然后找相对多的h5 / flutter 工程师快速实现产品功能</p>
+<p>信息流类的app（具有大量不同布局的页面承载海量内容，比如新闻类，电商类）一般一定会通过hybrid或者其他跨平台技术来提高开发效率</p>
+<p>关于实战<br>
+好，这是一些现状，现在来谈谈情怀，我个人比较喜欢native开发，首先我是一个iOS研发，从现在的平台能力上看，swift已经提供了足够的能力，承载很多设计方式，能够拿出一些优雅的方案（相比oc）；当然我们这里不讨论是否能跨平台，从能达到的高度来说，追求极致体验，应该双平台都用native开发，但这最终也要看产品形态和团队的人才构成<br>
+我们从computer science的角度来看看，一个native端的研发平常都在干什么</p>
+<p>画界面，写交互逻辑<br>
+摆弄持久化方案，比如db，kv<br>
+发各种网络请求，通过操作系统api，或者某些中间件，比如AFNetworking，OkHttp<br>
+各种性能优化，这里加入多线程能优化什么，这里如果换一个数据结构能做什么优化，怎么少用一点内存<br>
+嗯，看起来一堆杂事，不过细想一下<br>
+界面卡了怎么办？来我们优化一下，可能就需要深入到一些很底层的知识上了，这个元素是gpu画的还是cpu画的，如果是cpu画的，和gpu画的性能差多少倍？要回答这个问题，可能得知道显存是怎么映射到内存的，NUMA，UMA架构的相关知识</p>
+<p>这里的多线程方案经常有OOM，那为什么OOM？一条线程的开销是什么？线程的堆栈在内存里是什么样的？线程的逻辑结构在内核里是什么样的？纤程的方案考虑过没有？</p>
+<p>这里的DB操作居然用了1.5s？好，db的页缓存参数设置对了吗？表里建索引了吗？db放在sd卡还是操作系统内置的存储里？NAND上哪种文件系统最高效？对了，确定需要db，不是kv？</p>
+<p>内存泄漏了？好，引用计数的背景下泄漏的原理是什么？标记清除的gc泄漏的原因又是什么？有没有办法自动检测内存泄漏？</p>
+<p>坊间有句话，下能修马桶，上能造火箭；上一个台阶看，一个到位的客户端研发，应该能挫其锐，解其纷，和其光，同其尘；</p>
+<p>如果你真的是一个能人，客户端绝对是一个足够大的竞技场，没有技术上的天花板，也很难有职业生涯上的天花板——从海外一线（FANG）到国内传统公司，都招大量客户端的岗位</p>
+<p>坦诚一点，我是带着目的来的！希望给刚刚入行的同学一些overview，让更多人才能选择客户端这个方向</p>
+<p>从行业角色看，客户端做的是一个看得见摸得着，直接面向用户的软件，想要效率可以选择效率，想要体验可以选择体验；想要创业，可以选择从一个app开始创业；</p>
+<p>最后，不要因为一个app运行在一个看起来很小的设备上就觉得它简单；</p>
+<p>简单的app大概在10W行代码左右；<br>
+稍微复杂一点的，大概在20～30W行；<br>
+一些巨型app，比如dau超过10亿的，一个端600～700人都很正常，代码量可能在1000w～2000w；<br>
+现在的移动设备，其实能力都很强，很难从性能体验上感受到一个app的重量（参考早年64M ram的pc跑一个photoshop要读磁盘读一两分钟），用户看到的只是一个app，轮流几个界面换一换，其实这背后有设计上的，优化上的大量心血和投入</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/ji-zhu-fang-an/" class="post-title gt-a-link">
+                    为何需要写技术方案？
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/dang-wo-men-zai-shuo-ke-hu-duan-de-shi-hou-wo-men-zai-shuo-shi-me/" class="leancloud_visitors" data-flag-title="当我们在说客户端的时候，我们在说什么">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

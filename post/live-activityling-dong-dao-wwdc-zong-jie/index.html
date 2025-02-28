@@ -1,0 +1,539 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Live Activity(灵动岛) WWDC 总结 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1740721352515">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1740721352515"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Live Activity(灵动岛) WWDC 总结
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-09-16 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <blockquote>
+<p>提供 <code>Live Activity</code>，在 <code>Dynamic Island </code> 和锁屏上显示你的应用程序的最新数据。</p>
+</blockquote>
+<h2 id="概述">概述</h2>
+<p><code>Live Activity</code> 在 iPhone 锁屏和 <code>Dynamic Island </code> 中显示你的应用程序的最新数据。这使人们能够一目了然地看到实时信息。</p>
+<p>要提供 <code>Live Activity</code>，请将代码添加到你现有的 Widget 扩展中，如果你的应用还没有包括一个 Widget 扩展，则可以创建一个新的 Widget 扩展。<code>Live Activity</code> 使用 <code>WidgetKit</code> 功能和 <code>SwiftUI</code> 作为其用户界面。ActivityKit 的作用是处理每个 <code>Live Activity</code> 的生命周期。你使用它的 API 来请求、更新和结束一个 <code>Live Activity</code>。</p>
+<blockquote>
+<p><code>Live Activity</code> 只在 iPhone 上提供。</p>
+</blockquote>
+<h2 id="明确-live-activity-要求和限制">明确 <code>Live Activity</code> 要求和限制</h2>
+<p>除非你的应用程序或用户结束它，否则一个 <code>Live Activity</code> 可以活跃长达 8 小时。超过这个限制，系统会自动结束它。当一个 <code>Live Activity</code> 结束时，系统会立即将其从 <code>Dynamic Island </code> 中删除。然而，&quot;<code>Live Activity</code>&quot; 仍在锁屏上，直到用户将其删除，或在系统将其删除前的另外四个小时，以先到者为准。因此，一个 <code>Live Activity</code> 在锁屏上最多保留 12 个小时。</p>
+<p>关于结束 <code>Live Activity</code> 的更多信息，请参阅下面的 <a href="https://developer.apple.com/documentation/activitykit/update-and-end-your-live-activity-with-remote-push-notifications">&quot;从你的应用程序中结束 <code>Live Activity</code>&quot;</a>。</p>
+<p>每个 <code>Live Activity</code> 都在自己的沙盒中运行，而且与小工具不同，它不能访问网络或接收位置更新。要更新一个活动的 <code>Live Activity</code> 的动态数据，请在你的应用程序中使用 ActivityKit 框架，或允许你的 <code>Live Activity</code> 接收远程推送通知，如用远程推送通知更新和结束你的 <code>Live Activity</code> 所述。</p>
+<blockquote>
+<p>ActivityKit 更新和远程推送通知更新的动态数据大小都不能超过 4KB。</p>
+</blockquote>
+<p><code>Live Activity</code> 有锁屏和 <code>Dynamic Island </code> 的不同视图。锁屏视图出现在所有设备上。支持 <code>Dynamic Island </code> 的设备使用以下视图显示 <code>Live Activity</code>：一个紧凑的前导视图、一个紧凑的后导视图、一个最小的视图和一个 <code>Dynamic Island </code> 的扩展视图。</p>
+<p>当一个人触摸并持有 <code>Dynamic Island </code> 中的紧凑或最小视图时，以及当 <code>Live Activity</code> 更新时，扩展视图会出现。在一个不支持 <code>Dynamic Island </code> 的无锁设备上，扩展的视图会以横幅的形式出现在 <code>Live Activity</code> 更新中。</p>
+<p>为了确保系统能在每个位置显示你的 <code>Live Activity</code>，你必须支持所有的视图。</p>
+<h2 id="在你的应用程序中添加对-live-activity-的支持">在你的应用程序中添加对 <code>Live Activity</code> 的支持</h2>
+<p>描述你的 <code>Live Activity</code> 的用户界面的代码是你的应用程序的小工具扩展的一部分。如果你已经在你的应用程序中提供了小部件，你可以将 <code>Live Activity</code> 的用户界面代码添加到你现有的小部件扩展中，并可能在你的小部件和 <code>Live Activity</code> 之间重复使用代码。然而，尽管 <code>Live Activity</code> 利用了 WidgetKit 的功能，但它们并不是小工具。与你用来更新小部件的用户界面的时间线机制不同，你从你的应用程序中通过 ActivityKit 或远程推送通知来更新一个 <code>Live Activity</code>。</p>
+<blockquote>
+<p>你可以创建一个小部件扩展来采用 <code>Live Activity</code>，而不提供小部件。然而，考虑同时提供小部件和 <code>Live Activity</code>，让人们在他们的主屏幕和锁屏上添加可瞥见的信息和个人触摸。</p>
+</blockquote>
+<p>要在你的应用程序中增加对 <code>Live Activity</code> 的支持。</p>
+<ol>
+<li>如果你还没有在你的应用程序中添加一个小部件，请创建一个小部件扩展。关于创建小部件扩展的更多信息，请参阅 WidgetKit 和创建小部件扩展。</li>
+<li>打开你的应用程序的 Info.plist 文件，添加支持 <code>Live Activity</code> 条目，并将其布尔值设置为 YES。或者，以源代码形式打开 Info.plist 文件，添加密钥 NSSupportsLiveActivities，然后将其类型设为布尔值，其值设为 YES。如果你的项目没有 Info.plist 文件，为你的 iOS 应用目标添加自定义 iOS 目标属性列表中的条目。</li>
+<li>添加定义 ActivityAttributes 结构的代码，描述你的 <code>Live Activity</code> 的静态和动态数据。</li>
+<li>使用你定义的 ActivityAttributes 来创建你需要的 ActivityConfiguration 来启动一个 <code>Live Activity</code>。</li>
+<li>添加代码来配置、启动、更新和结束你的 <code>Live Activity</code>。</li>
+</ol>
+<h2 id="定义一组静态和动态数据">定义一组静态和动态数据</h2>
+<p>在你为你的 <code>Live Activity</code> 创建配置对象之前，通过实现 ActivityAttributes 来描述你的 <code>Live Activity</code> 所显示的数据。ActivityAttributes 通知系统关于出现在 <code>Live Activity</code> 中的静态数据。你也可以使用 ActivityAttributes 来声明所需的自定义 Activity.ContentState 类型，描述你的 <code>Live Activity</code> 的动态数据。在下面的例子中，PizzaDeliveryAttributes 描述了以下静态数据：订购的披萨数量，客户需要支付的金额，以及订单号。注意代码是如何定义 Activity.ContentState 来封装动态数据的：送披萨的司机的名字和预计送达时间。此外，这个例子定义了类型别名 PizzaDeliveryStatus，以使代码更具有描述性和易于阅读。</p>
+<pre><code class="language-Swift">import Foundation
+import ActivityKit
+
+struct PizzaDeliveryAttributes: ActivityAttributes {
+    public typealias PizzaDeliveryStatus = ContentState
+
+    public struct ContentState: Codable, Hashable {
+        var driverName: String
+        var deliveryTimer: ClosedRange&lt;Date&gt;
+    }
+
+    var numberOfPizzas: Int
+    var totalAmount: String
+    var orderNumber: String
+}
+</code></pre>
+<h2 id="为你的现场活动创建配置">为你的现场活动创建配置</h2>
+<p>在你用 ActivityAttributes 结构添加代码来描述出现在 <code>Live Activity</code> 中的数据后，在你的 widget 实现中添加代码来返回 ActivityConfiguration. 下面的例子使用前面例子中的 PizzaDeliveryAttributes 结构来配置你的 <code>Live Activity</code>。</p>
+<pre><code class="language-Swift">import SwiftUI
+import WidgetKit
+
+@main
+struct PizzaDeliveryActivityWidget: Widget {
+    var body: some WidgetConfiguration {ActivityConfiguration(for: PizzaDeliveryAttributes.self) { context in
+            // Create the view that appears on the Lock Screen and as a
+            // banner on the Home Screen of devices that don't support the
+            // Dynamic Island.
+            // ...
+        } dynamicIsland: { context in
+            // Create the views that appear in the Dynamic Island.
+            // ...
+        }
+    }
+}
+</code></pre>
+<p>如果你的应用程序已经提供了 widget，请将 <code>Live Activity</code> 添加到你的 WidgetBundle。如果你没有 WidgetBundle-- 例如，如果你只提供一个 widget-- 按照创建 widget 扩展中的描述，创建一个 widget bundle，然后将 <code>Live Activity</code> 添加到其中。下面的例子显示了你如何使用带有可用性子句的 if 语句，只在设备支持 <code>Live Activity</code> 的情况下将 <code>Live Activity</code> 添加到你的 Widget 捆绑包。</p>
+<pre><code class="language-Swift">@main
+struct PizzaDeliveryWidgets: WidgetBundle {
+    var body: some Widget {FavoritePizzaWidget()
+
+        if #available(iOS 16.1, *) {PizzaDeliveryLiveActivity()
+        }
+    }
+}
+</code></pre>
+<h2 id="创建锁屏视图">创建锁屏视图</h2>
+<p>为了创建 <code>Live Activity</code> 的用户界面，你在之前创建的小部件扩展中使用 SwiftUI。与部件类似，你不提供 <code>Live Activity</code> 的用户界面的尺寸，而是让系统决定适当的尺寸。</p>
+<p>从出现在锁屏上的视图开始。下面的代码用标准的 SwiftUI 视图显示 PizzaDeliveryAttributes 结构描述的信息。</p>
+<pre><code class="language-Swift">@main
+struct PizzaDeliveryWidget: Widget {    
+    var body: some WidgetConfiguration {ActivityConfiguration(for: PizzaDeliveryAttributes.self) { context in
+	    // Create the view that appears on the Lock Screen and as a
+            // banner on the Home Screen of devices that don't support the
+            // Dynamic Island.
+            LockScreenLiveActivityView(context: context)
+        } dynamicIsland: { context in
+            // Create the views that appear in the Dynamic Island.
+            // ...
+        }
+    }
+}
+
+struct LockScreenLiveActivityView: View {
+    let context: ActivityViewContext&lt;PizzaDeliveryAttributes&gt;
+    
+    var body: some View {
+        VStack {Spacer()
+            Text(&quot;\(context.state.driverName) is on their way with your pizza!&quot;)Spacer()
+            HStack {Spacer()
+                Label {Text(&quot;\(context.attributes.numberOfPizzas) Pizzas&quot;) } icon: {Image(systemName: &quot;bag&quot;)
+                        .foregroundColor(.indigo)
+                }
+                .font(.title2)
+                Spacer()
+                Label {Text(timerInterval: context.state.deliveryTimer, countsDown: true)
+                        .multilineTextAlignment(.center)
+                        .frame(width: 50)
+                        .monospacedDigit() } icon: {Image(systemName: &quot;timer&quot;)
+                        .foregroundColor(.indigo)
+                }
+                .font(.title2)
+                Spacer() }
+            Spacer() }
+        .activitySystemActionForegroundColor(.indigo)
+        .activityBackgroundTint(.cyan)
+    }
+}
+</code></pre>
+<blockquote>
+<p>如果锁屏上的 <code>Live Activity</code> 的高度超过 160 点，系统可能会将其截断。<code>Dynamic Island </code> 中的扩展视图的高度不能超过 144 点。</p>
+</blockquote>
+<p>默认情况下，系统为文本使用默认的主色调，为你的 <code>Live Activity</code> 使用最适合人的锁屏的背景颜色。要设置自定义的色调颜色，请使用 activityBackgroundTint(<em>😃 视图修改器，如上例所示。此外，该示例使用 activitySystemActionForegroundColor(</em>😃 视图修改器来定制辅助按钮的文本颜色，该按钮允许人们在锁屏上结束 <code>Live Activity</code>。</p>
+<p>要设置自定义背景色调颜色的半透明性，请使用 opacity(_😃 视图修改器或指定不透明的背景颜色。</p>
+<blockquote>
+<p>在包含 Always-On Retina 显示屏的设备上，系统会调暗屏幕以保持电池寿命，并在锁屏上显示 <code>Live Activity</code>，如同在黑暗模式下一样。使用 SwiftUI 的 isLuminanceReduced 环境值来检测 Always On，并使用在 Always On 下看起来很棒的图像。</p>
+</blockquote>
+<h2 id="创建紧凑和最小的视图">创建紧凑和最小的视图</h2>
+<p><code>Live Activity</code> 出现在支持它的设备的 <code>Dynamic Island </code> 中。当你启动一个 <code>Live Activity</code> 并且它是唯一活跃的 <code>Live Activity</code> 时，紧凑的前导和后导视图会一起出现，在 <code>Dynamic Island </code> 中形成一个连贯的视图。当一个以上的 <code>Live Activity</code> 被激活时 -- 无论是来自你的应用程序还是来自多个应用程序 -- 系统会选择哪些 <code>Live Activity</code> 是可见的，并使用每个活动的最小视图显示两个。一个最小的视图出现在 <code>Dynamic Island </code> 中，而另一个则是分离的。<br>
+<img src="https://www.yiios.com/post-images/1730794459607.png" alt="" loading="lazy"></p>
+<blockquote>
+<p>默认情况下，<code>Dynamic Island </code> 中的紧凑和最小视图使用黑色背景颜色和白色文本。使用 keylineTint(_😃 修改器为 <code>Dynamic Island </code> 应用一个可选的色调颜色 -- 例如，如下例所示，应用一个青色的色调颜色。</p>
+</blockquote>
+<p>下面的例子显示了披萨外卖应用程序如何使用标准的 SwiftUI 视图提供所需的紧凑和最小的视图。</p>
+<pre><code class="language-Swift">import SwiftUI
+import WidgetKit
+
+@main
+struct PizzaDeliveryWidget: Widget {    
+    var body: some WidgetConfiguration {ActivityConfiguration(for: PizzaDeliveryAttributes.self) { context in
+            // Create the view that appears on the Lock Screen and as a
+            // banner on the Home Screen of devices that don't support the
+            // Dynamic Island.
+            // ...
+        } dynamicIsland: { context in
+            // Create the views that appear in the Dynamic Island.
+            DynamicIsland {
+		            // Create the expanded view.
+		            // ...
+		            
+            } compactLeading: {
+                Label {Text(&quot;\(context.attributes.numberOfPizzas) Pizzas&quot;) } icon: {Image(systemName: &quot;bag&quot;)
+                        .foregroundColor(.indigo)
+                }
+                .font(.caption2)
+            } compactTrailing: {Text(timerInterval: context.state.deliveryTimer, countsDown: true)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 40)
+                    .font(.caption2)
+            } minimal: {VStack(alignment: .center) {Image(systemName: &quot;timer&quot;)
+                    Text(timerInterval: context.state.deliveryTimer, countsDown: true)
+                        .multilineTextAlignment(.center)
+                        .monospacedDigit().font(.caption2)
+                }
+            }
+            .keylineTint(.cyan)
+        }
+    }
+}
+</code></pre>
+<h2 id="创建扩展视图">创建扩展视图</h2>
+<p>除了紧凑和最小视图，你必须支持扩展视图。当一个人触摸并持有一个紧凑或最小的视图时，它就会出现，也会在 <code>Live Activity</code> 更新时短暂出现。没有 <code>Dynamic Island </code> 的设备也会在你更新 <code>Live Activity</code> 时以横幅的形式显示扩展视图。使用 DynamicIslandExpandedRegionPosition 来指定您希望 SwiftUI 定位您内容的详细说明。下面的例子显示了披萨外卖应用程序如何创建其扩展视图。</p>
+<pre><code class="language-Swift">@main
+struct PizzaDeliveryWidget: Widget {
+    var body: some WidgetConfiguration {ActivityConfiguration(for: PizzaDeliveryAttributes.self) { context in
+            // Create the view that appears on the Lock Screen and as a
+            // banner on the Home Screen of devices that don't support the
+            // Dynamic Island.
+            LockScreenLiveActivityView(context: context)
+        } dynamicIsland: { context in
+            // Create the views that appear in the Dynamic Island.
+            DynamicIsland {
+                // Create the expanded view.
+                DynamicIslandExpandedRegion(.leading) {Label(&quot;\(context.attributes.numberOfPizzas) Pizzas&quot;, systemImage: &quot;bag&quot;).foregroundColor(.indigo)
+                        .font(.title2)
+                }
+                
+                DynamicIslandExpandedRegion(.trailing) {
+                    Label {Text(timerInterval: context.state.deliveryTimer, countsDown: true)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 50)
+                            .monospacedDigit() } icon: {Image(systemName: &quot;timer&quot;)
+                            .foregroundColor(.indigo)
+                    }
+                    .font(.title2)
+                }
+                
+                DynamicIslandExpandedRegion(.center) {Text(&quot;\(context.state.driverName) is on their way!&quot;).lineLimit(1)
+                        .font(.caption)
+                }
+                
+                DynamicIslandExpandedRegion(.bottom) {
+                    Button {// Deep link into your app.} label: {Label(&quot;Call driver&quot;, systemImage: &quot;phone&quot;)
+                    }
+                    .foregroundColor(.indigo)
+                }
+            } compactLeading: {
+                // Create the compact leading view.
+                // ...
+            } compactTrailing: {
+                // Create the compact trailing view.
+                // ...
+            } minimal: {
+                // Create the minimal view.
+                // ...
+            }
+            .keylineTint(.yellow)
+        }
+    }
+}
+</code></pre>
+<p>为了渲染出现在扩展的 <code>Live Activity</code> 中的视图，系统将扩展的视图划分为不同的区域。注意这个例子是如何返回一个指定了几个 DynamicIslandExpandedRegion 对象的 DynamicIsland。传递以下的 DynamicIslandExpandedRegionPosition 值，在展开的视图中的指定位置布置你的内容。</p>
+<ul>
+<li>center（中心）将内容放在 TrueDepth 摄像机的下面。</li>
+<li>leading（前缘）将内容沿扩展的 <code>Live Activity</code> 的前缘放置在 TrueDepth 摄像机旁边，并将其他内容包裹在其下面。</li>
+<li>trailing（尾部）将内容沿扩展的 <code>Live Activity</code> 的尾部边缘放置在 TrueDepth 摄像机旁边，并将其他内容包在其下面。</li>
+<li>bottom（底部）将内容放在前部、尾部和中部的内容下面。</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1730794442959.png" alt="" loading="lazy"></figure>
+<p>为了渲染出现在扩展的 <code>Live Activity</code> 中的内容，系统首先确定中心内容的宽度，同时考虑到前面和后面的内容的最小宽度。然后，系统根据内容的垂直位置来放置和调整前导和尾随内容的大小。默认情况下，前导和尾随的内容会得到等量的水平空间。</p>
+<figure data-type="image" tabindex="2"><img src="https://www.yiios.com/post-images/1730794434780.png" alt="" loading="lazy"></figure>
+<p>你可以通过向 init(_:priority:content:) 初始化器传递一个优先级来告诉系统优先处理其中一个 DynamicIslandExpandedRegion 视图。系统会以 <code>Dynamic Island </code> 的全部宽度渲染具有最高优先级的视图。</p>
+<blockquote>
+<p>如果内容太宽，无法出现在 TrueDepth 摄像机旁边的领先位置，请使用 belowIfTooWide 修改器来渲染 TrueDepth 摄像机下面的领先内容。</p>
+</blockquote>
+<h2 id="创建一个进入你的应用程序的深度链接">创建一个进入你的应用程序的深度链接</h2>
+<p>人们点击一个 <code>Live Activity</code> 来启动你的应用程序。为了改善用户的体验，你可以使用 widgetURL(_😃 来创建一个深度链接，从锁屏、紧凑领先、紧凑落后和最小视图进入你的应用程序。当紧凑前导和尾随视图可见时，确保两者都链接到你的应用程序中的同一个屏幕。</p>
+<p>扩展视图提供了额外的选项，可以使用 SwiftUI 的链接创建进入你的应用程序的深度链接，以获得更多的效用。例如，送比萨的应用程序可以包括两个 SwiftUI 视图。一个视图可以在应用中打开当前送餐的地图，第二个视图可以打开一个屏幕，让人们给送披萨的人打电话。</p>
+<h2 id="确保-live-activity-是可用的">确保 <code>Live Activity</code> 是可用的</h2>
+<p><code>Live Activity</code> 仅在 iPhone 上可用。如果你的应用程序在多个平台上可用，并提供小部件扩展，请确保 <code>Live Activity</code> 在运行时可用。此外，用户可以在 &quot;设置&quot; 应用程序中选择停用应用程序的 <code>Live Activity</code>。</p>
+<p>要查看 <code>Live Activity</code> 是否可用以及用户是否允许你的应用使用 <code>Live Activity</code>。</p>
+<ul>
+<li>使用 areActivitiesEnabled 来同步确定是否在你的应用程序中显示启动 <code>Live Activity</code> 的用户界面。</li>
+<li>通过观察 activityEnablementUpdates 流的任何用户授权变化来接收异步的用户授权更新，并对其作出相应的响应。</li>
+</ul>
+<blockquote>
+<p>一个应用可以启动多个 <code>Live Activity</code>，而一个设备可以从多个应用中运行 <code>Live Activity</code>。除了确保 <code>Live Activity</code> 是可用的之外，在启动、更新或结束 <code>Live Activity</code> 时，要始终优雅地处理任何错误。例如，启动一个 <code>Live Activity</code> 可能会失败，因为用户的设备可能已经达到了活动 <code>Live Activity</code> 的上限。</p>
+</blockquote>
+<h2 id="启动-live-activity">启动 <code>Live Activity</code></h2>
+<p>当你的应用程序处于前台时，你可以通过 request(attributes:contentState:pushType:) 函数在应用程序的代码中启动一个 <code>Live Activity</code>。它将你创建的属性和内容状态作为参数，提供出现在 <code>Live Activity</code> 中的初始值，并告诉系统哪些数据是动态的。如果你实现了远程推送通知来更新 <code>Live Activity</code>，也要提供 pushType 参数。</p>
+<p>下面的代码示例为前面的例子中的比萨送餐应用启动了一个新的 <code>Live Activity</code>。</p>
+<pre><code class="language-Swift">var future = Calendar.current.date(byAdding: .minute, value: (Int(minutes) ?? 0), to: Date())!
+future = Calendar.current.date(byAdding: .second, value: (Int(seconds) ?? 0), to: future)!
+let date = Date.now...future
+let initialContentState = PizzaDeliveryAttributes.ContentState(driverName: &quot;Bill James&quot;, deliveryTimer:date)
+let activityAttributes = PizzaDeliveryAttributes(numberOfPizzas: 3, totalAmount: &quot;$42.00&quot;, orderNumber: &quot;12345&quot;)
+
+do {deliveryActivity = try Activity.request(attributes: activityAttributes, contentState: initialContentState)
+    print(&quot;Requested a pizza delivery `Live Activity` \(String(describing: deliveryActivity?.id)).&quot;)} catch (let error) {print(&quot;Error requesting pizza delivery `Live Activity` \(error.localizedDescription).&quot;)
+}
+</code></pre>
+<p>请注意，上面的代码段没有传递 pushType 参数，而是在不使用远程推送通知更新内容的情况下启动一个 <code>Live Activity</code>。它还将返回的 <code>Live Activity</code> 对象存储在 deliveryActivity 属性中，你可以用它来更新和结束 <code>Live Activity</code>。关于使用远程推送通知来更新你的 <code>Live Activity</code> 的更多信息，请参阅使用远程推送通知来更新和结束你的 <code>Live Activity</code>。</p>
+<blockquote>
+<p>你只能在你的应用程序中启动一个 <code>Live Activity</code>，而它是在前台。然而，当 <code>Live Activity</code> 在后台运行时，你可以从你的应用程序中更新或结束它 - 例如，通过使用后台任务。</p>
+</blockquote>
+<h2 id="更新-live-activity">更新 <code>Live Activity</code></h2>
+<p>当你从你的应用程序启动一个 <code>Live Activity</code> 时，使用你在启动 <code>Live Activity</code> 时收到的活动对象的 update(using:) 函数来更新出现在 <code>Live Activity</code> 中的数据。要检索你的应用程序的活动现场活动，请使用活动。</p>
+<p>例如，披萨递送应用程序可以用新的递送时间和新的司机来更新显示递送状态的 <code>Live Activity</code>。它还可以使用 update(using:alertConfiguration:) 函数在 iPhone 和 Apple Watch 上显示一个提醒，告诉人们新的 <code>Live Activity</code> 内容，如下例所示。</p>
+<pre><code class="language-Swift">var future = Calendar.current.date(byAdding: .minute, value: (Int(minutes) ?? 0), to: Date())!
+future = Calendar.current.date(byAdding: .second, value: (Int(seconds) ?? 0), to: future)!
+let date = Date.now...future
+let updatedDeliveryStatus = PizzaDeliveryAttributes.PizzaDeliveryStatus(driverName: &quot;Anne Johnson&quot;, deliveryTimer: date)
+let alertConfiguration = AlertConfiguration(title: &quot;Delivery Update&quot;, body: &quot;Your pizza order will arrive in 25 minutes.&quot;, sound: .default)
+
+await deliveryActivity?.update(using: updatedDeliveryStatus, alertConfiguration: alertConfiguration)
+</code></pre>
+<blockquote>
+<p>更新数据的大小不能超过 4KB。</p>
+</blockquote>
+<p>在 Apple Watch 上，系统使用标题和正文属性进行提示。在 iPhone 上，系统不显示常规警报，而是在 <code>Dynamic Island </code> 中显示扩展的 <code>Live Activity</code>。在不支持 <code>Dynamic Island </code> 的设备上，系统会在主屏幕上显示一个横幅，使用你的 <code>Live Activity</code> 的扩展视图。</p>
+<h2 id="为内容更新制作动画">为内容更新制作动画</h2>
+<p>当你定义 <code>Live Activity</code> 的用户界面时，系统会忽略任何动画修改器 -- 例如 withAnimation(<em>:</em>😃 和 animation(_:value:)-- 而使用系统的动画计时。然而，当 <code>Live Activity</code> 的动态内容发生变化时，系统会执行一些动画。文本视图通过模糊的内容转换对内容变化进行动画处理，而系统对图像和 SF 符号的内容转换进行动画处理。如果你根据内容或状态的变化从用户界面上添加或删除视图，视图会淡入淡出。使用以下视图转换来配置这些内置的转换：不透明、移动（边缘：）、滑动、推（从：），或它们的组合。此外，用 numericText(countsDown:) 为定时器文本申请动画效果。</p>
+<blockquote>
+<p>在包含 Always-On Retina 显示屏的设备上，系统不会执行动画以保持 Always On 的电池寿命。请确保使用 SwiftUI 的 isLuminanceReduced 环境值来检测 Always On，然后再对内容进行动画修改。</p>
+</blockquote>
+<h2 id="从你的应用程序中结束-live-activity">从你的应用程序中结束 <code>Live Activity</code></h2>
+<p>始终在相关任务或实时事件结束后结束一个 <code>Live Activity</code>。已经结束的 <code>Live Activity</code> 会留在锁屏上，直到用户将其移除或系统将其自动移除。自动移除取决于你提供给 end(using:dismissalPolicy:) 函数的移除策略。此外，总是包括一个更新的 Activity.ContentState 以确保 <code>Live Activity</code> 在结束后显示最新和最后的内容更新。这很重要，因为 <code>Live Activity</code> 可以在锁屏上保持一段时间的可见性。</p>
+<p>下面的例子显示了当比萨饼被送达时，比萨外卖应用程序将如何结束一个显示订单的交付状态的 <code>Live Activity</code>。</p>
+<pre><code class="language-Swift">let finalDeliveryStatus = PizzaDeliveryAttributes.PizzaDeliveryStatus(driverName: &quot;Anne Johnson&quot;, deliveryTimer: Date.now...Date())
+
+Task {await deliveryActivity?.end(using:finalDeliveryStatus, dismissalPolicy: .default)
+}
+</code></pre>
+<p>上面的例子使用的是默认的解雇策略。因此，<code>Live Activity</code> 在结束后会在锁屏上出现一段时间，让用户看一眼手机就能看到最新信息。用户可以选择在任何时候删除 <code>Live Activity</code>，或者系统在活动结束 4 小时后自动删除。</p>
+<p>要立即从锁屏上删除已经结束的 <code>Live Activity</code>，请使用立即。或者，使用 after(_😃 来指定四小时窗口内的一个日期。虽然您可以提供任何日期，但系统会在给定的日期后或在 <code>Live Activity</code> 结束后四小时后删除已结束的 <code>Live Activity</code>-- 以先到者为准。</p>
+<p>用户可以在任何时候从他们的锁屏上删除您的 <code>Live Activity</code>。这将结束您的 <code>Live Activity</code>，但它不会结束或取消用户开始 <code>Live Activity</code> 的行动。例如，用户可以从锁屏上删除他们的披萨外卖的 <code>Live Activity</code>，但这并不能取消披萨订单。当用户或系统删除 <code>Live Activity</code> 时，ActivityState 会变成 ActivityState.dismissed。</p>
+<h2 id="用远程推送通知更新或结束你的-live-activity">用远程推送通知更新或结束你的 <code>Live Activity</code></h2>
+<p>除了通过 ActivityKit 从你的应用中更新和结束 <code>Live Activity</code> 之外，还可以通过远程推送通知来更新或结束 <code>Live Activity</code>，你可以从你的服务器向苹果推送通知服务（APNs）发送该通知。要了解更多关于使用远程推送通知来更新你的 <code>Live Activity</code> 的信息，请看用远程推送通知来更新和结束你的 <code>Live Activity</code>。</p>
+<h2 id="追踪更新">追踪更新</h2>
+<p>当你启动一个 <code>Live Activity</code> 时，ActivityKit 返回一个 Activity 对象。除了唯一标识每个活动的 id 外，Activity 还提供了观察内容状态、活动状态和推送令牌更新的序列。使用相应的序列来接收你的应用程序中的更新，使你的应用程序和 <code>Live Activity</code> 保持同步，并对变化的数据做出响应。</p>
+<ul>
+<li>要观察一个正在进行的 <code>Live Activity</code> 的状态 -- 例如，确定它是否在活动或已经结束 -- 使用 activityStateUpdates。</li>
+<li>要观察一个 <code>Live Activity</code> 的动态内容的变化，使用 contentState。</li>
+<li>要观察一个 <code>Live Activity</code> 的推送令牌的变化，使用 pushTokenUpdates。</li>
+</ul>
+<h2 id="获取一个活动列表">获取一个活动列表</h2>
+<p>你的应用程序可以启动一个以上的 <code>Live Activity</code>。例如，一个体育应用可以允许用户为他们感兴趣的每场现场体育比赛启动一个 <code>Live Activity</code>。如果你的应用程序启动多个 <code>Live Activity</code>，使用 activityUpdates 函数获得关于你的应用程序正在进行的 <code>Live Activity</code> 的通知。追踪正在进行的 Live 活动，以确保你的应用程序的数据与 ActivityKit 追踪的活跃 Live 活动同步。</p>
+<p>下面的片段显示了披萨外卖应用程序如何检索正在进行的活动列表。</p>
+<pre><code class="language-Swift">// Fetch all ongoing pizza delivery Live Activities.
+for await activity in Activity&lt;PizzaDeliveryAttributes&gt;.activityUpdates {print(&quot;Pizza delivery details: \(activity.attributes)&quot;)
+}
+</code></pre>
+<p>获取所有活动的另一个用例是维护正在进行中的 <code>Live Activity</code>，并确保你不会让任何活动的运行时间超过需要。例如，系统可能会停止你的应用程序，或者你的应用程序可能在一个 <code>Live Activity</code> 处于活动状态时崩溃。当应用程序下次启动时，检查是否有任何活动仍在进行，更新你的应用程序存储的 <code>Live Activity</code> 数据，并结束任何不再相关的 <code>Live Activity</code>。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/ios-ying-yong-nei-tui-song-zu-jian-ji-zhu-fang-an/" class="post-title gt-a-link">
+                    iOS 应用内推送组件技术方案
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/live-activityling-dong-dao-wwdc-zong-jie/" class="leancloud_visitors" data-flag-title="Live Activity(灵动岛) WWDC 总结">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
