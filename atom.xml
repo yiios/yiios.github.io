@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://www.yiios.com</id>
+    <title>画家-个人简历</title>
+    <updated>2026-04-09T09:22:00.941Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://www.yiios.com"/>
+    <link rel="self" href="https://www.yiios.com/atom.xml"/>
+    <logo>https://www.yiios.com/images/avatar.png</logo>
+    <icon>https://www.yiios.com/favicon.ico</icon>
+    <rights>All rights reserved 2026, 画家-个人简历</rights>
+    <entry>
+        <title type="html"><![CDATA[AI API 相关概念学习笔记 - 20260409]]></title>
+        <id>https://www.yiios.com/post/ai-api-xiang-guan-gai-nian-xue-xi-bi-ji-20260409/</id>
+        <link href="https://www.yiios.com/post/ai-api-xiang-guan-gai-nian-xue-xi-bi-ji-20260409/">
+        </link>
+        <updated>2026-04-09T09:20:32.000Z</updated>
+        <content type="html"><![CDATA[<!-- more -->
+<h2 id="一-大语言模型训练阶段">一、 大语言模型训练阶段</h2>
+<p>大语言模型的诞生通常需要经历以下三个关键阶段，能力层层递进：</p>
+<ol>
+<li>预训练 (Pre-training)核心机制：使用海量的未标注文本数据来调整模型参数，让其学习底层语言规律与丰富的世界知识。阶段成果：模型具备了良好的文本生成能力（即“接话茬”的能力）。</li>
+<li>有监督微调 (Supervised Fine-Tuning, SFT)核心机制：使用高质量的“指令-回复”对（语料）来微调模型，将其文本生成能力转化为对用户有价值的回复。阶段成果：模型具备了基本的能力，能够遵循人类指令回答问题或者执行特定任务。</li>
+<li>对齐训练 (Alignment)核心机制：定义“什么是好的回复”，综合考虑有用性 (Helpful)、无害性 (Harmless)、诚实性 (Honest) 这 3H原则 来塑造模型的价值观。阶段成果：进一步调整模型，优化输出的质量与人类期望的符合度。</li>
+</ol>
+<hr>
+<h2 id="二-lora-微调模型-peft">二、 LoRA 微调模型 (PEFT)</h2>
+<p><strong>LoRA (Low-Rank Adaptation)</strong> 属于参数高效微调 (PEFT) 技术的一种主流方法。</p>
+<ul>
+<li>核心原理：在已有预训练模型的基础上，冻结绝大部分预训练参数，仅更新极小部分参数（通过注入低秩矩阵实现）。</li>
+<li>适用场景：算力与显存资源受限的环境。多任务并发的部署需求。垂直领域下游应用的快速迭代。</li>
+</ul>
+<hr>
+<h2 id="三-大模型生成控制参数">三、 大模型生成控制参数</h2>
+<p>在调用 API 生成文本时，通过调整以下参数可以控制输出的多样性与确定性：</p>
+<h3 id="1-temperature-温度">1. Temperature (温度)</h3>
+<figure data-type="image" tabindex="1"><img src="https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/79484473296/53d2/5dd6/4518/7f12a93e6cb521dc26477ec4837ffb8c.jpg" alt="" loading="lazy"></figure>
+<ul>
+<li>高温 (High Temperature)：导致推理解码阶段的候选词分布偏向平坦，拉近各个词汇之间的概率差异，输出更具随机性和创造力。</li>
+<li>低温 (Low Temperature)：拉大候选词之间的概率差。当温度趋近于 0 时，理论上会退化为贪心解码 (Greedy Decoding)，即永远只选择概率最高的候选词，输出极其确定。</li>
+</ul>
+<h3 id="2-top-k-采样">2. Top-k 采样</h3>
+<p><strong>机制</strong>：按照<strong>数量</strong>来控制候选词范围。先输出概率分布，找出概率最高的 <code>k</code> 个候选词，仅在这个范围内进行采样。</p>
+<ul>
+<li>优点：减少选中极低概率候选词的可能，避免这部分词元导致的事实错误或语义不通。</li>
+<li>缺点：k 值是固定的，不考虑概率分布的平坦程度。当只需要 2-3 个合理选项时，固定的 k 会被迫引入低概率词元。当场景需要更多合理候选词时，固定的 k 又会限制范围，过滤掉全局最优的可能性。</li>
+</ul>
+<h3 id="3-top-p-采样-nucleus-sampling">3. Top-p 采样 (Nucleus Sampling)</h3>
+<p><strong>机制</strong>：按照<strong>概率总和</strong>来控制候选词范围。将所有候选词按概率从高到低排序并依次累加，当累加值刚超过 <code>p</code> 值时停止，被累加的词即组成新的采样池，随后进行归一化采样。</p>
+<ul>
+<li>优点：能够自适应概率分布的平坦程度，完美解决了 Top-k 数量固定的缺点。</li>
+<li>缺点：在概率分布极端集中时（例如某一个候选词的概率极高），截断范围会急剧缩小，退化为几乎确定性的选择。</li>
+</ul>
+<blockquote>
+<p><strong>💡 最佳实践</strong><br>
+在实际应用中，通常建议将 <strong>Top-p 和 Top-k 结合使用</strong>（取两者的交集或并集），既能动态适应分布，又能保证截断低质量词元，达到最理想的生成效果。</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[不要被低价蒙蔽了双眼，3分钟教你如何判断中转站的实际价格]]></title>
+        <id>https://www.yiios.com/post/bu-yao-bei-di-jie-meng-bi-liao-shuang-yan-3-fen-zhong-jiao-ni-ru-he-pan-duan-zhong-zhuan-zhan-de-shi-ji-jie-ge/</id>
+        <link href="https://www.yiios.com/post/bu-yao-bei-di-jie-meng-bi-liao-shuang-yan-3-fen-zhong-jiao-ni-ru-he-pan-duan-zhong-zhuan-zhan-de-shi-ji-jie-ge/">
+        </link>
+        <updated>2025-02-28T05:27:17.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="背景">背景</h2>
+<p>首先感谢这个帖子开启了一个很有意思的话题，那就是中转站的价格是否是和他们宣传的一样便宜。https://linux.do/t/topic/459160</p>
+<h2 id="结论">结论</h2>
+<p>凑巧这周二我也手动算了一圈27个中转站的实际价格。找到一些很有意思的结论：</p>
+<ol>
+<li>大部分中转站的价格都非常乱，一般来说都是 有错有对的模型倍率 + 五花八门的分组倍率 + 充值汇率</li>
+<li>有些商用中转站默认的模型价格就是错的，只要用默认就有问题，最明显的就是o1-mini / o3-mini 这两个，很多站点的价格是 1.5 倍，比官方定价贵大约3倍。</li>
+<li>在发现问题后，可以尝试和商家进行沟通，一般来说小错误应该得到修正。商家不及时修正的后果可能是被挂在论坛上吊着打。https://linux.do/t/topic/366740</li>
+</ol>
+<p>对于所有看到的帖子的中转站维护者，从简便计算和做大做强的角度应该这样做：</p>
+<ol>
+<li>将自己的模型倍率对齐官方的价格。</li>
+<li>价格波动可以依靠不同的分组倍率来调节。</li>
+<li>充值汇率固定为1:1。</li>
+</ol>
+<h2 id="经验分享">经验分享</h2>
+<h3 id="计算公式">计算公式</h3>
+<p>中转站的实际价格 = (模型倍率/官方标准倍率) * (分组倍率，没有就是1) * 充值汇率</p>
+<blockquote>
+<p>举个例子，假如有一个叫 FakeAI 的中转站，他的充值汇率是1块钱等于1美元额度，o1-mini 模型倍率是 1.5倍且补全倍率和官方一致是4倍，分组&quot;官转&quot;的分组倍率是 2x。<br>
+那么对于 o1-mini 模型实际的价格就是 (1.5/0.55) * 2 * 1 = 5.45。也就是充值 5.45 元才能获得这个模型官方 1 美元的额度。<br>
+注：0.55是 o1-mini 模型的官方倍率，具体推算规则在下面。</p>
+</blockquote>
+<h3 id="关于模型倍率的概念">关于模型倍率的概念</h3>
+<p>因为几乎所有的中转站都是 one-api 的某种分支。所以他们都继承了模型倍率这个屎山概念。<br>
+在早期，因为可以注册账号试用5美元 OpenAI 的 api额度，但有rpm的严格限制。刚开发的 one-api 很大一个功能就是把一堆试用账号攒起来混在一起用。<br>
+那时候的模型是 davinci-002。这个模型输入 1M tokens的价格是 $2.00，输出 1M tokens 的价格 $2.00。<br>
+one-api 基于某种简便计算的需要(？)，创造了一个模型倍率的概念，设定1倍的模型倍率和 davinci-002 的输入输出价格一致。即 1M tokens 的价格为 $2.00。</p>
+<p>相关讨论可以看这里：https://github.com/songquanpeng/one-api/issues/766</p>
+<h3 id="热门模型的倍率">热门模型的倍率</h3>
+<p>几个热门模型的标准倍率应该是这样的：</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>模型倍率</th>
+<th>提示倍率</th>
+<th>补全倍率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gpt-4o-mini</td>
+<td>0.075</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>gpt-4o</td>
+<td>1.25</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>o1-mini</td>
+<td>0.55</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>claude-3.5-sonnet</td>
+<td>1.5</td>
+<td>1</td>
+<td>5</td>
+</tr>
+<tr>
+<td>deepseek-r1</td>
+<td>0.275</td>
+<td>1</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="如何计算我用的模型的标准倍率应该是多少">如何计算我用的模型的标准倍率应该是多少？</h3>
+<p>我们以高峰期的 deepseek r1 模型为例。以美元计价，在未命中缓存时输入 1M tokens的价格是 $0.55，输出 1M tokens的价格是 $2.19。<br>
+那么，deepseek r1的模型倍率 = deepseek-r1输入价格 $0.55 / davinci-002的输入价格 $2 = 0.275倍。<br>
+这个时候我们会注意到 输出 token 的价格比输入贵很多，那么输出比输入贵多少倍，就是补全倍率。<br>
+补全倍率 = deepseek-r1输出价格 $2.19 /  deepseek-r1输入价格 $0.55 = 4倍。</p>
+<p><img src="https://www.yiios.com/post-images/1740720505052.jpg" alt="" loading="lazy"><br>
+来源：https://api-docs.deepseek.com/quick_start/pricing</p>
+<h3 id="我手动计算后27个中转站的实际价格">我手动计算后27个中转站的实际价格</h3>
+<p>可以看这个：<a href="https://www.aiapipk.com">中转站竞技场</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[计算 nodeseek 论坛签到获得鸡腿的平均值]]></title>
+        <id>https://www.yiios.com/post/ji-suan-nodeseek-lun-tan-qian-dao-huo-de-ji-tui-de-ping-jun-zhi/</id>
+        <link href="https://www.yiios.com/post/ji-suan-nodeseek-lun-tan-qian-dao-huo-de-ji-tui-de-ping-jun-zhi/">
+        </link>
+        <updated>2024-11-09T11:16:18.000Z</updated>
+        <content type="html"><![CDATA[<p>获取了当天总计1903条签到数据，总鸡腿数量为9425，平均值为4.952706253。<br>
+以收集到的数据来说，略亏一丢丢。直接+5是最稳妥、长期收益最高的。</p>
+<p>作案工具如下，复制到浏览器控制台中使用：</p>
+<pre><code class="language-js">function sleep(ms) {
+  return new Promise(resolve =&gt; setTimeout(resolve, ms));
+}
+
+async function fetchData(page) {
+  const url = `https://www.nodeseek.com/api/attendance/board?page=${page}`;
+  const response = await fetch(url);
+  if (response.ok) {
+    return response.json();
+  } else {
+    return null;
+  }
+}
+
+function convertToCSV(data) {
+  const header = [&quot;id&quot;, &quot;member_id&quot;, &quot;day_id&quot;, &quot;gain&quot;, &quot;created_at&quot;, &quot;member_name&quot;];
+  const rows = data.map(item =&gt; [
+    item['id'], item['member_id'], item['day_id'], item['gain'], item['created_at'], item['member_name']
+  ]);
+  const csvContent = [header, ...rows].map(e =&gt; e.join(&quot;,&quot;)).join(&quot;\n&quot;);
+  return csvContent;
+}
+
+function downloadCSV(csvContent, filename = 'attendance_data.csv') {
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement(&quot;a&quot;);
+  const url = URL.createObjectURL(blob);
+  link.setAttribute(&quot;href&quot;, url);
+  link.setAttribute(&quot;download&quot;, filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+async function main() {
+  let page = 1;
+  let allData = [];
+  while (true) {
+    const data = await fetchData(page);
+    console.log(data);
+    if (data &amp;&amp; data['list'].length &gt; 0) {
+      allData = allData.concat(data['list']);
+      page += 1;
+      await sleep(5000); // 等待5秒
+    } else {
+      break;
+    }
+  }
+
+  if (allData.length &gt; 0) {
+    const csvContent = convertToCSV(allData);
+    downloadCSV(csvContent);
+    console.log(&quot;数据已保存到CSV文件中。&quot;);
+  } else {
+    console.log(&quot;未获取到数据。&quot;);
+  }
+}
+
+main();
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mac端崩溃日志解析]]></title>
+        <id>https://www.yiios.com/post/mac-duan-beng-kui-ri-zhi-jie-xi/</id>
+        <link href="https://www.yiios.com/post/mac-duan-beng-kui-ri-zhi-jie-xi/">
+        </link>
+        <updated>2024-11-05T07:01:32.000Z</updated>
+        <content type="html"><![CDATA[<p>提前准备 MyApp.app.dSYM 符号表文件。</p>
+<p>使用atos命令来完成符号化，在手动解析时，对不同系统版本的崩溃日志的兼容性较好。具体命令如下：</p>
+<pre><code>$atos -arch &lt;Binary Architecture&gt; -o &lt;Path to dSYM file&gt;/Contents/Resources/DWARF/&lt;binary image name&gt; -l &lt;load address&gt; &lt;address to symbolicate&gt;
+</code></pre>
+<p>例如：</p>
+<pre><code>$atos -arch arm64 -o MyApp -l 0x0000000102728000
+</code></pre>
+<h2 id="参数说明">参数说明：</h2>
+<ol>
+<li>Binary Architecture:arm64、armv6、armv7armv7s 根据自己的情况来写。</li>
+<li>Path to dSYM file: dSYM文件的路径。</li>
+<li>binary image name: 你工程的名字。</li>
+<li>load address: 基地址，如果我们的崩溃日志中没有这个信息，laod address = address to symbolicate - offset</li>
+<li>address to symbolicate:当前方法的内存地址</li>
+</ol>
+<h2 id="实操案例">实操案例：</h2>
+<p>一条崩溃日志如下：</p>
+<pre><code>MyApp 0x0000000103ef6970 0x0000000102728000 + 24963440
+</code></pre>
+<p>地址计算，计算可知：</p>
+<pre><code>0x0000000103ef6970（address to symbolicate）= 0x0000000102728000（load address） + 24963440（offset）
+</code></pre>
+<p>一般以app命名的地方就是崩溃的位置。0x0000000103ef6970为虚拟内存地址，0x0000000102728000为基地址。</p>
+<p>开始进行命令行操作，cd .../DWARF到这个文件夹下<br>
+输入命令行：</p>
+<pre><code>atos -arch arm64 -o MyApp -l 0x0000000102728000
+</code></pre>
+<p>回车后继续输入</p>
+<pre><code>0x0000000103ef6970（虚拟内存地址）
+</code></pre>
+<p>然后就会得到终端输出的崩溃堆栈细节如下：</p>
+<pre><code>-[XXXWasmCallManager didReceiveConvertedAudioData:size:] (in MyApp) (XXXWasmCallManager:364)
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[本地大模型部署(以Qwen2-72B为例)]]></title>
+        <id>https://www.yiios.com/post/ben-di-da-mo-xing-bu-shu-yi-qwen2-72b-wei-li/</id>
+        <link href="https://www.yiios.com/post/ben-di-da-mo-xing-bu-shu-yi-qwen2-72b-wei-li/">
+        </link>
+        <updated>2024-09-09T07:03:48.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="总结">总结</h2>
+<h2 id="目标模型选型">目标模型选型</h2>
+<p>根据<code>https://lmarena.ai/</code>的排行榜数据，选择了在中文领域表现较好的开源LLM模型 Qwen2 部署。<br>
+对于模型参数应该是越大越好，所以选择了72B的大模型。想在88G显存的运行的话，则需要对模型进行量化，初步选择了Int4的AWQ量化模型，有时间再和GPTQ量化模型做对比。</p>
+<h2 id="硬件选型">硬件选型</h2>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>型号</th>
+<th>采购平台</th>
+<th>单价</th>
+<th>数量</th>
+<th>金额（元）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>2670v3</td>
+<td>闲鱼</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>主板</td>
+<td>超微 X10DRG-Q</td>
+<td>闲鱼</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>D4 2400 16g recc</td>
+<td>闲鱼</td>
+<td>100</td>
+<td>4</td>
+<td>400</td>
+</tr>
+<tr>
+<td>硬盘</td>
+<td>西数 SN550 1T</td>
+<td>闲鱼</td>
+<td>200</td>
+<td>1</td>
+<td>200</td>
+</tr>
+<tr>
+<td>硬盘转接卡</td>
+<td>佳翼 M.2转PCIE</td>
+<td>闲鱼</td>
+<td>20</td>
+<td>1</td>
+<td>20</td>
+</tr>
+<tr>
+<td>CPU散热</td>
+<td>超微2011风冷</td>
+<td>闲鱼</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>机箱</td>
+<td>7048GR-TR整机</td>
+<td>闲鱼</td>
+<td>1040</td>
+<td>1</td>
+<td>1040</td>
+</tr>
+<tr>
+<td>机箱风扇</td>
+<td>7048GR-TR自带</td>
+<td>闲鱼</td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>显卡</td>
+<td>2080ti 300A 22g</td>
+<td>闲鱼</td>
+<td>2250</td>
+<td>4</td>
+<td>9000</td>
+</tr>
+<tr>
+<td>显卡供电线</td>
+<td>6p转8p</td>
+<td>闲鱼</td>
+<td>10</td>
+<td>4</td>
+<td>40</td>
+</tr>
+<tr>
+<td>电源</td>
+<td>2000W服务器电源</td>
+<td>闲鱼</td>
+<td>100</td>
+<td>1</td>
+<td>100</td>
+</tr>
+<tr>
+<td><strong>总计</strong></td>
+<td>/</td>
+<td>/</td>
+<td>/</td>
+<td>/</td>
+<td><strong>10800</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="环境配置和部署">环境配置和部署</h2>
+<h3 id="显卡配置">显卡配置</h3>
+<p>限制功耗、限制频率、开启持久模型。</p>
+<pre><code>sudo nvidia-smi -pl 180
+sudo nvidia-smi -lgc 300,1400
+sudo nvidia-smi -pm 1
+</code></pre>
+<h3 id="模型配置">模型配置</h3>
+<pre><code>python -m vllm.entrypoints.openai.api_server     --model=/home/limo/AI/Qwen2-72B-Instruct-AWQ     --quantization=awq     --served-model=qwen2-72B     --dtype=float16     --tensor-parallel-size=4      --trust-remote-code     --gpu-memory-utilization=0.95           --host=0.0.0.0          --port=1234     --max-model-len=16000            --max-num-seqs=2048            --kv-cache-dtype=fp8_e5m2
+</code></pre>
+<p>--dtype<br>
+在 awq 下面 应该设置为 float16 或者 half</p>
+<p>--tensor-parallel-size<br>
+取决于 gpu 的数量，4卡时设置为4</p>
+<p>--trust-remote-code<br>
+信任来自 huggingface 的远程代码。</p>
+<p>--gpu-memory-utilization<br>
+用于模型执行程序的 GPU 内存比例，范围为 0 到 1。例如，值 0.5 表示 GPU 内存利用率为 50%。如果未指定，则将使用默认值 0.9。</p>
+<p>--max-model-len<br>
+模型上下文长度。如果未指定，将自动从模型配置中派生。这个取决于vram大小</p>
+<p>--max-num-seqs<br>
+一次推理最多能处理的sequences数量。默认值是256。</p>
+<p>max_num_seqs越大，能处理的请求数量就会越大，但提升也会有上限，不一定是越大越好:<br>
+在2卡上，max_num_seqs设置为1024，相较于256，速度提升19%。<br>
+在4卡上，max_num_seqs设置为2048，相较于256，速度提升35%;max_num_seqs设置为4096，相较于256，速度提升33%。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[大学专业的一点思考]]></title>
+        <id>https://www.yiios.com/post/da-xue-zhuan-ye-de-yi-dian-si-kao/</id>
+        <link href="https://www.yiios.com/post/da-xue-zhuan-ye-de-yi-dian-si-kao/">
+        </link>
+        <updated>2024-07-18T12:43:35.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="认识社会">认识社会</h2>
+<h3 id="经济学">经济学</h3>
+<ul>
+<li>经济机器是怎样运行的<br>
+https://www.bilibili.com/video/BV1aJ411t77a/</li>
+</ul>
+<h3 id="博弈论">博弈论</h3>
+<ul>
+<li>
+<p>&lt;信任的进化&gt;游戏</p>
+<ul>
+<li>在重复互动且存在双赢可能时，最佳策略为复读机，即第一次合作释放善意，之后跟随对方的操作，如果他和你善意合作，则继续合作，如果欺骗坑你，则也欺骗坑他。<br>
+适用于长期合作关系。</li>
+<li>上述条件不满足时，最佳策略为坑对方。<br>
+典型场景为火车站/景区的黑心商店，因为只有单次互动。<br>
+反向案例：好吃且便宜的饭店一般在破旧市井居民区，而不在高大上的商场。因为只存在多次互动。</li>
+</ul>
+</li>
+</ul>
+<h3 id="道德法律">道德&amp;法律</h3>
+<ul>
+<li>
+<p>以道德上的自省，来约束自己内心中幽暗的角落</p>
+<ul>
+<li>每个人都有幽暗的角落</li>
+<li>康德：有两样东西，越是经常而持久地对它们进行反复思考，它们就越是使心灵充满常新而日益增长的惊赞和敬畏：我头上的星空和我心中的道德法则。</li>
+</ul>
+</li>
+<li>
+<p>道德是用来约束自己的，而不是约束他人。<br>
+你可以选择做一个道德高尚的人，但你不能强迫他人道德高尚。</p>
+<ul>
+<li>医院ICU里面一个人心坏了一个人肺坏了一个人脾坏了一个人肝坏了一个人肾坏</li>
+<li>结果你从旁边过,医生说小伙子身体怎么样?要不过来一下,牺牲你一个幸福千万家.</li>
+<li>后来发现这五个年轻人都是北大的高材生,而这个走过来的年轻人是一个智力残疾者,那牺牲一个智力残疾者的器官,来挽救五个大有前途的年轻人,这合理吗</li>
+</ul>
+</li>
+<li>
+<p>道德是标语，法律是底线</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1730792349843.jpg" alt="" loading="lazy"></figure>
+<h3 id="社会分层">社会分层</h3>
+<figure data-type="image" tabindex="2"><img src="https://www.yiios.com/post-images/1730792340634.jpg" alt="" loading="lazy"></figure>
+<h2 id="理想主义">理想主义</h2>
+<h3 id="对大学祛魅">对大学祛魅</h3>
+<ul>
+<li>
+<p>上海交通大学生存手册</p>
+<ul>
+<li>https://survivesjtu.gitbook.io/survivesjtumanual/li-zhi-pian/huan-ying-lai-dao-shang-hai-jiao-tong-da-xue</li>
+<li>国内本科教育 = 上课耽误学习</li>
+<li>”以为我为中心”，探寻自己真正需要真正感兴趣的东西，而不要把时间精力“荒废”在可能对以后的自己没有任何意义的绩点上面</li>
+<li>选课刷分的奇技淫巧（刷分不是目的，只是达成目的(毕业/保研)的手段）</li>
+</ul>
+</li>
+</ul>
+<h3 id="科研的道路">科研的道路</h3>
+<ul>
+<li>科研不纯粹，不是象牙塔，而是一把残酷的双刃剑。</li>
+<li>
+<ol start="0">
+<li>读研期间难以养活自己，可能人到30岁仍然一事无成，没有收入不能成家立业，而本科同学已经买房买车成家立业儿女双全。</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>读研是学徒制，人生依附于导师。(北邮举报导师事件)</li>
+</ol>
+</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://www.yiios.com/post-images/1730792331590.jpg" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<ol start="2">
+<li>科研以发论文为导向，而论文是否发表依赖审稿人的意见，存在人的因素。且科研是需要花钱的，拨款人为政府，人的因素更重！</li>
+</ol>
+<ul>
+<li>科研圈是学阀体质，以院士杰青长江等帽子体系为核心，争权夺利，党同伐异。</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>发表绝大部分的论文属于灌水论文，创新点依靠A+b+c，即已知a+b b+c，把三者凑一起。另外有很多论文存在数据造假，即实验结果无法复制，作者有意跳转显著数据甚至篡改数据得到有利的结果。(山竹醇事件)</li>
+</ol>
+<ul>
+<li>
+<p>实验室没有实验条件，实验纯属捏造<br>
+<img src="https://www.yiios.com/post-images/1730792323019.jpg" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>数据编造和在不同的场合反复使用。<br>
+<img src="https://www.yiios.com/post-images/1730792317438.jpg" alt="" loading="lazy"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="热爱">热爱</h3>
+<ul>
+<li>世界上只有一种英雄主义，就是在认清生活真相之后依然热爱生活。</li>
+<li>进步需要人推动</li>
+</ul>
+<h2 id="实用主义功利主义">实用主义/功利主义</h2>
+<h3 id="排除掉不选的">排除掉不选的</h3>
+<ul>
+<li>医药</li>
+<li>农</li>
+<li>师范</li>
+<li>金融</li>
+<li>管理</li>
+<li>水利</li>
+<li>土木</li>
+<li>测绘</li>
+</ul>
+<h3 id="能选什么">能选什么</h3>
+<ul>
+<li>
+<p>理</p>
+<ul>
+<li>数学类</li>
+<li>物理学类</li>
+<li>化学类</li>
+<li>天文学类</li>
+<li>大气科学类</li>
+<li>海洋科学类</li>
+<li>地球物理学类</li>
+<li>地质学类</li>
+<li>生物科学类</li>
+<li>统计学类</li>
+<li>力学类</li>
+</ul>
+</li>
+<li>
+<p>工</p>
+<ul>
+<li>
+<p>物理相关 - 电磁</p>
+<ul>
+<li>电气类</li>
+<li>电子信息类</li>
+<li>自动化类</li>
+<li>生物医学工程类</li>
+</ul>
+</li>
+<li>
+<p>物理相关 - 光</p>
+<ul>
+<li>仪器类</li>
+</ul>
+</li>
+<li>
+<p>物理相关 - 热</p>
+<ul>
+<li>能源动力类</li>
+</ul>
+</li>
+<li>
+<p>物理相关 - 力</p>
+<ul>
+<li>机械类</li>
+<li>自动化类</li>
+<li>航空航天类</li>
+</ul>
+</li>
+<li>
+<p>计算机类⭐️</p>
+</li>
+<li>
+<p>经济学类（经济统计学）</p>
+</li>
+<li>
+<p>工业工程类</p>
+</li>
+<li>
+<p>交通运输类</p>
+</li>
+<li>
+<p>海洋工程类</p>
+</li>
+<li>
+<p>兵器类</p>
+</li>
+<li>
+<p>核工程类</p>
+</li>
+<li>
+<p>环境科学与工程类</p>
+</li>
+<li>
+<p>材料类</p>
+</li>
+<li>
+<p>地质类</p>
+</li>
+<li>
+<p>矿业类</p>
+</li>
+<li>
+<p>轻工类</p>
+</li>
+<li>
+<p>纺织类（纺织工程、非织造材料与工程）</p>
+</li>
+<li>
+<p>食品科学与工程类（不含食品质量与安全、食品营养与健康、烹饪与营养教育）</p>
+</li>
+<li>
+<p>安全科学与工程类</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="怎么选">怎么选</h3>
+<ul>
+<li>
+<ol>
+<li>结合自身优势科目</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>人生进步靠康波，行业发展赌曲线</li>
+</ol>
+<ul>
+<li>康波就是大的经济周期。上图为长期经济周期曲线，还有8-10年的短期经济周期曲线，走势类似。!</li>
+</ul>
+<figure data-type="image" tabindex="4"><img src="https://www.yiios.com/post-images/1730792298844.jpg" alt="" loading="lazy"></figure>
+</li>
+</ul>
+<figure data-type="image" tabindex="5"><img src="https://www.yiios.com/post-images/1730792267859.jpg" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<ol start="3">
+<li>工科先选专业，根据专业排名选学校</li>
+</ol>
+<ul>
+<li>
+<p>大学专业含金量</p>
+<ul>
+<li>城市/地域</li>
+<li>硕博点</li>
+<li>大学排名</li>
+<li>学校历史传承</li>
+<li>软实力</li>
+</ul>
+</li>
+<li>
+<p>分数决定学校档次，但不一定决定专业的含金量</p>
+</li>
+</ul>
+</li>
+<li>
+<ol start="4">
+<li>对于部分专业，不读研无法从事就业</li>
+</ol>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[玩高负载游戏的时候耳机总是有电流声，其他场景不会]]></title>
+        <id>https://www.yiios.com/post/wan-gao-fu-zai-you-xi-de-shi-hou-er-ji-zong-shi-you-dian-liu-sheng-qi-ta-chang-jing-bu-hui/</id>
+        <link href="https://www.yiios.com/post/wan-gao-fu-zai-you-xi-de-shi-hou-er-ji-zong-shi-you-dian-liu-sheng-qi-ta-chang-jing-bu-hui/">
+        </link>
+        <updated>2024-06-16T05:41:52.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="问题分析">问题分析：</h2>
+<p>除非是蓝牙等无线耳机，不然都会有电流声。<br>
+打绝地求生时，耳机有一个很明显的底噪。如果在做其他事情或者玩轻度负载的游戏时则不会出现。<br>
+我对相关的硬件进行了排查，更换了主板声卡耳机音箱等部件，也查了一些资料，发现这个电流声大概率是显卡cpu高负载时的产生的共地噪声，一般你用3dmark跑分时应该也能听到。</p>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1730792748511.png" alt="" loading="lazy"></figure>
+<h2 id="解决方案">解决方案：</h2>
+<p>解决办法有三个：</p>
+<ol>
+<li>
+<p>买一个3.5mm的音频共地隔离器。价格在10-20元，耳机孔接隔离器，耳机接隔离器的另一端。优势是价格便宜，劣势是会增加阻抗，劣化音质，需要把声音拉的很大才能听到声音，而麦克风可能还是被噪声污染的。(实测可行)<br>
+<img src="https://www.yiios.com/post-images/1730792764760.jpg" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>买一个usb独立声卡，再买一个usb隔离器。价格加一起可能在100元起步，隔离器看声卡什么水平，一般的就买几十块的不支持480M的usb隔离器，价格几十元。声卡比较好的话，选拓品的hs01或者hs02，隔离器价格在三五百块。优势是效果好，连同耳麦一块解决共地噪声，缺点是钱包得顶住。(实测可行)<br>
+<img src="https://www.yiios.com/post-images/1730792844205.png" alt="" loading="lazy"><br>
+<img src="https://www.yiios.com/post-images/1730792884802.jpg" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>买一个usb独立声卡，再买一个PCI-E转usb扩展卡，要选外插独立供电的那种。价格100元以内。优点便宜，如果有效果，则连同耳麦一块解决共地噪声，缺点是效果需要实测，不一定能解决，而且这个方案不支持笔记本。(实测有一定降噪效果，但不能完全消除)</p>
+</li>
+</ol>
+<h2 id="类似案例">类似案例：</h2>
+<p>为什么吃鸡有电流声？？？<a href="https://tieba.baidu.com/p/8887759698">https://tieba.baidu.com/p/8887759698</a><br>
+耳机电流问题！<a href="https://tieba.baidu.com/p/8869999164">https://tieba.baidu.com/p/8869999164</a><br>
+关于bose qc20耳机的使用。电流声。<a href="https://ngabbs.com/read.php?tid=37798235">https://ngabbs.com/read.php?tid=37798235</a><br>
+​为什么只有玩绝地时耳机有电流声<a href="https://ngabbs.com/read.php?tid=19964098">https://ngabbs.com/read.php?tid=19964098</a></p>
+<h2 id="参考资料">参考资料：</h2>
+<p>音频系统的接地环路噪音问题<a href="https://www.bilibili.com/video/BV1jF411x75i/">https://www.bilibili.com/video/BV1jF411x75i/</a><br>
+降噪神器：小小音频隔离器快速去除电流噪声！！#导播之家 #直播技巧 #音频隔离器<a href="https://www.bilibili.com/video/BV15A4m137DU/">https://www.bilibili.com/video/BV15A4m137DU/</a><br>
+【JAVE】打游戏？买什么声卡？平价游戏音频产品综合推荐<a href="https://www.bilibili.com/video/BV1uF4m1T7bD/">https://www.bilibili.com/video/BV1uF4m1T7bD/</a><br>
+PCHIFI里USB隔离的原理究竟是？<a href="https://www.chiphell.com/thread-2561821-1-1.html">https://www.chiphell.com/thread-2561821-1-1.html</a><br>
+[破事氵] USB隔离器(Topping HS01)居然真的有用 <a href="https://nga.178.com/read.php?tid=34425455">https://nga.178.com/read.php?tid=34425455</a><br>
+[数字信号]-关于USB信号的隔离方法探讨<a href="https://github.com/emoestudio/eEEExplore-2023/issues/18">https://github.com/emoestudio/eEEExplore-2023/issues/18</a><br>
+ISOUSB211 Development Board - USB 2.0 High-Speed (480 Mbps) Galvanic Isolator.<a href="https://notabug.org/niconiconi/isousb211">https://notabug.org/niconiconi/isousb211</a><br>
+ISOUSB211  支持低速、高速和全速的低发射隔离式 USB 中继器<a href="https://www.ti.com.cn/product/cn/ISOUSB211">https://www.ti.com.cn/product/cn/ISOUSB211</a><br>
+HS02 说明书<a href="https://dl.topping.audio/usermanual/hs02.pdf">https://dl.topping.audio/usermanual/hs02.pdf</a><br>
+MEASUREMENTS: Topping HS01 - USB 2.0 Isolator &amp; Ground Loop Eliminator (and a listen to Santana's &quot;Blessings and Miracles&quot;)<a href="https://archimago.blogspot.com/2022/03/measurements-topping-hs01-usb-20.html">https://archimago.blogspot.com/2022/03/measurements-topping-hs01-usb-20.html</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ChatGPT被封申诉教程]]></title>
+        <id>https://www.yiios.com/post/chatgpt-bei-feng-shen-su-jiao-cheng/</id>
+        <link href="https://www.yiios.com/post/chatgpt-bei-feng-shen-su-jiao-cheng/">
+        </link>
+        <updated>2024-03-27T06:22:09.000Z</updated>
+        <content type="html"><![CDATA[<p>最近有很多客户有类似的情况（账号的plus会员还没到期账号被封禁了），这期我就教大家如何维权，原则上恢复账号，不行的话申请退款。</p>
+<figure data-type="image" tabindex="1"><img src="https://www.yiios.com/post-images/1711521120191.png" alt="" loading="lazy"></figure>
+<p>ChatGPT官方客服联系网址<br>
+https://help.openai.com/en/</p>
+<p>1、首先登录到openai 帮助中心（https://help.openai.com/en/），在帮助中心右下角里面有一个聊天小部件，在小部件里面发起工单，同时帮助中心里面也有相关教程。<br>
+<img src="https://www.yiios.com/post-images/1711520659784.jpg" alt="" loading="lazy"></p>
+<p>2、在小部件里面的message里面，发起工单对话。<br>
+<img src="https://www.yiios.com/post-images/1711520667190.jpg" alt="" loading="lazy"></p>
+<p>3、在对话里面选择Payment and Billing----Something else，接下来会出现一个对话框，可以在对话框里进行详细的描述和诉求。<br>
+<img src="https://www.yiios.com/post-images/1711520672689.jpg" alt="" loading="lazy"></p>
+<p>4、主要说明一下账户情况和相关诉求。因为客服回应很慢，而且有时差，往往是在半夜出现，建议留言的时候就把所有诉求以及联系方式说清楚。我这里有个两个模板大家可以借鉴一下（翻译可以用ChatGPT代劳）：</p>
+<hr>
+<p>首先说明账号信息（邮箱），什么情况（被封禁），说明账号被盗用，你不知情，并表示你在使用期间并没有违反openAI的相关规定。说明一下是多久开的plus，到期没有（如果到期了也没事，你账号被封了也会退），并表达希望贵方能进行调查，并恢复自己的账号，如果恢复不了就申请退款！最后表达一下感谢！</p>
+<hr>
+<p>你好，我有一些账单问题，我的邮箱地址是：[你的邮箱]。当我像往常一样登录时，发现我的账户被禁止了。这非常遗憾，因为我相信我是在合法合规地使用它的，并且我多次购买了PLUS服务。现在我的账户不可用了，我希望OPEN AI团队能够退还我本月支付的PLUS费用，总共[费用]美元。我是通过银行卡支付账单的，我用来支付的银行卡账户也是我本人的。如果需要，我也可以提供详细的付款信息。</p>
+<figure data-type="image" tabindex="2"><img src="https://www.yiios.com/post-images/1711520680660.jpg" alt="" loading="lazy"></figure>
+<p>5、等上几天后他们就会对你的工单进行回复，并让你提供相关信息，然后好进行退款事项。注意：用你被封禁的账号的邮箱跟他们给定的邮箱联系，并提供相关信息。</p>
+<figure data-type="image" tabindex="3"><img src="https://www.yiios.com/post-images/1711520701596.jpg" alt="" loading="lazy"></figure>
+<p>6、后面只需要跟他们进行邮件交流就行了，邮件一般回复的比较快，等你把相关信息发过去后他们确认后就会进行退款。</p>
+<figure data-type="image" tabindex="4"><img src="https://www.yiios.com/post-images/1711520710738.jpg" alt="" loading="lazy"></figure>
+<p>如果有ChatGPT使用/plus订阅等方面的问题，可以加我的微信:limo-on沟通交流解决。</p>
+<figure data-type="image" tabindex="5"><img src="https://cardocr-1251789346.cos.ap-guangzhou.myqcloud.com/wx_qr.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mac 系统(M 系处理器)搭建幻兽帕鲁(palworld)服务器]]></title>
+        <id>https://www.yiios.com/post/mac-xi-tong-m-xi-chu-li-qi-da-jian-huan-shou-pa-lu-palworldfu-wu-qi/</id>
+        <link href="https://www.yiios.com/post/mac-xi-tong-m-xi-chu-li-qi-da-jian-huan-shou-pa-lu-palworldfu-wu-qi/">
+        </link>
+        <updated>2024-01-24T14:16:38.000Z</updated>
+        <content type="html"><![CDATA[<!-- more -->
+<h2 id="环境准备">环境准备</h2>
+<ol>
+<li>下载安装docker，https://www.docker.com/。</li>
+<li>修改 docker desktop 中的 Settings - Resources ，把CPU Limit拉满，Memory Limit 拉到给剩2-3G接近满值，Swap拉满，保存。</li>
+<li>创建一个文件夹，例如：<code>palworld-arm-docker</code>，在里面创建一个空的子文件夹 <code>palworld</code>。</li>
+</ol>
+<h2 id="docker-compose">docker-compose</h2>
+<p>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>docker-compose.yml</code> 文件。<br>
+<code>mem_limit</code>视自己的刚才的<code>Memory Limit</code>调整，比如<code>Memory Limit</code>是14G，那么<code>mem_limit</code>就设定为13G，这样可以在内存泄露严重时自动重启容器。</p>
+<pre><code>version: '3'
+services:
+  pal:
+    image: czy0612/palworld-server
+    restart: always
+    mem_limit: 13g
+    container_name: pal
+    ports:
+      - 8211:8211/udp
+      - 25575:25575/tcp
+    volumes:
+      - ./PalWorldSettings.ini:/home/steam/Steam/steamapps/common/PalServer/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini
+      - ./palworld:/home/steam/Steam/steamapps/common/PalServer/
+</code></pre>
+<h2 id="palgameworldsettings游戏配置">PalGameWorldSettings(游戏配置)</h2>
+<p>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>PalWorldSettings.ini</code> 文件。</p>
+<p>官方文档：https://tech.palworldgame.com/optimize-game-balance<br>
+配置生成器：https://dysoncheng.github.io/PalWorldSettingGenerator/setting.html</p>
+<p>默认配置如下，如何修改可以参考上面两个网页：</p>
+<pre><code>[/Script/Pal.PalGameWorldSettings]
+OptionSettings=(Difficulty=None,DayTimeSpeedRate=1.000000,NightTimeSpeedRate=1.000000,ExpRate=1.000000,PalCaptureRate=1.000000,PalSpawnNumRate=1.000000,PalDamageRateAttack=1.000000,PalDamageRateDefense=1.000000,PlayerDamageRateAttack=1.000000,PlayerDamageRateDefense=1.000000,PlayerStomachDecreaceRate=1.000000,PlayerStaminaDecreaceRate=1.000000,PlayerAutoHPRegeneRate=1.000000,PlayerAutoHpRegeneRateInSleep=1.000000,PalStomachDecreaceRate=1.000000,PalStaminaDecreaceRate=1.000000,PalAutoHPRegeneRate=1.000000,PalAutoHpRegeneRateInSleep=1.000000,BuildObjectDamageRate=1.000000,BuildObjectDeteriorationDamageRate=1.000000,CollectionDropRate=1.000000,CollectionObjectHpRate=1.000000,CollectionObjectRespawnSpeedRate=1.000000,EnemyDropItemRate=1.000000,DeathPenalty=All,bEnablePlayerToPlayerDamage=False,bEnableFriendlyFire=False,bEnableInvaderEnemy=True,bActiveUNKO=False,bEnableAimAssistPad=True,bEnableAimAssistKeyboard=False,DropItemMaxNum=3000,DropItemMaxNum_UNKO=100,BaseCampMaxNum=128,BaseCampWorkerMaxNum=15,DropItemAliveMaxHours=1.000000,bAutoResetGuildNoOnlinePlayers=False,AutoResetGuildTimeNoOnlinePlayers=72.000000,GuildPlayerMaxNum=20,PalEggDefaultHatchingTime=72.000000,WorkSpeedRate=1.000000,bIsMultiplay=False,bIsPvP=False,bCanPickupOtherGuildDeathPenaltyDrop=False,bEnableNonLoginPenalty=True,bEnableFastTravel=True,bIsStartLocationSelectByMap=True,bExistPlayerAfterLogout=False,bEnableDefenseOtherGuildPlayer=False,CoopPlayerMaxNum=4,ServerPlayerMaxNum=32,ServerName=&quot;Default Palworld Server&quot;,ServerDescription=&quot;&quot;,AdminPassword=&quot;123456&quot;,ServerPassword=&quot;&quot;,PublicPort=8211,PublicIP=&quot;&quot;,RCONEnabled=True,RCONPort=25575,Region=&quot;&quot;,bUseAuth=True,BanListURL=&quot;https://api.palworldgame.com/api/banlist.txt&quot;)
+</code></pre>
+<h2 id="运行">运行</h2>
+<ol>
+<li>终端中 cd 到 <code>palworld-arm-docker</code> 文件夹目录下</li>
+<li>拉取 docker 镜像<code>docker-compose pull</code></li>
+<li>运行 <code>docker-compose up -d</code></li>
+<li>等待30秒后 <code>sudo docker logs pal</code><br>
+看到如下信息说明服务器配置好了，马上可以冲了！</li>
+</ol>
+<pre><code>dlopen failed trying to load:
+steamclient.so
+with error:
+steamclient.so: cannot open shared object file: No such file or directory
+[S_API] SteamAPI_Init(): Loaded '/home/steam/.steam/sdk64/steamclient.so' OK.  (First tried local 'steamclient.so')
+CAppInfoCacheReadFromDiskThread took 29 milliseconds to initialize
+Setting breakpad minidump AppID = 2394010
+[S_API FAIL] Tried to access Steam interface SteamUser021 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface SteamFriends017 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface STEAMAPPS_INTERFACE_VERSION008 before SteamAPI_Init succeeded.
+[S_API FAIL] Tried to access Steam interface SteamNetworkingUtils004 before SteamAPI_Init succeeded.
+</code></pre>
+<h2 id="网络配置">网络配置</h2>
+<p>如果你能拿到公网ip，看端口映射章节，拿不到公网ip看内网穿透章节。</p>
+<h3 id="端口映射">端口映射</h3>
+<ol>
+<li>路由上给 Mac 终端指定一个ip</li>
+<li>虚拟服务器/端口映射上，配置Mac终端映射端口8211(协议UDP)/25575(协议TCP)</li>
+</ol>
+<h3 id="frp内网穿透">FRP内网穿透</h3>
+<p>FRP教程我这里就不在赘述了，这里使用的是0.52.3版本。下面有一份配置可供参考。</p>
+<p>frps配置参考：</p>
+<pre><code>bindPort = 7001 #{必选} 客户端与该端口建立连接
+transport.tls.enable = true
+
+#身份验证
+auth.method = &quot;token&quot;  #{可选}身份验证方式
+auth.token = &quot;123456&quot; #token设置密码，用于通过身份验证创建连接
+
+#frp服务仪表板配置
+webServer.port = 17300  #{也可自行修改端口}
+webServer.addr = &quot;0.0.0.0&quot; #公网ip或者域名
+webServer.user = &quot;user&quot; #登录用户名{可自行修改}
+webServer.password = &quot;password&quot; #登录密码{可自行修改}
+</code></pre>
+<p>frpc配置参考：</p>
+<pre><code>serverAddr = &quot;114.114.115.115&quot; #填写你的frps服务器
+serverPort = 7001 #填写你的frps服务的端口
+auth.token = &quot;123456&quot;
+transport.tls.enable = true
+
+[[proxies]]
+name = &quot;palworld-ucp&quot;
+type = &quot;udp&quot;
+localIP = &quot;127.0.0.1&quot;
+localPort = 8211
+remotePort = 8211
+
+[[proxies]]
+name = &quot;palworld-rcon&quot;
+type = &quot;tcp&quot;
+localIP = &quot;127.0.0.1&quot;
+localPort = 25575
+remotePort = 25575
+</code></pre>
+<h2 id="游戏运维">游戏运维</h2>
+<h3 id="rcon服务器指令">RCON服务器指令</h3>
+<p>工具：<br>
+https://github.com/gorcon/rcon-cli</p>
+<p>用法示例，12345为之前设置的游戏参数<code>AdminPassword</code>，根据实际情况修改：</p>
+<pre><code>./rcon -a 114.114.115.115:25575 -p 123456
+</code></pre>
+<p>服务器命令表：<br>
+https://tech.palworldgame.com/server-commands</p>
+<h3 id="存档备份">存档备份</h3>
+<h4 id="备份配置">备份配置</h4>
+<p>目前游戏不太稳定，炸档情况偶有发生，所以最好定时备份存档，这样在出问题时可以快速回滚。</p>
+<ol>
+<li>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>back</code> 文件夹。</li>
+<li>在 <code>palworld-arm-docker</code> 文件夹下面创建 <code>back.sh</code> 文件（注意按照你<code>palworld-arm-docker</code> 文件夹的实际路径对脚本中的路径进行修改）：</li>
+</ol>
+<pre><code>#!/bin/bash
+
+# 备份文件名
+t=$(date +%Y-%m-%d-%H-%M-%S).zip
+echo $t
+
+# 备份文件存放路径，此处注意
+zip_path=/Users/Admin/Server/palworld-arm-docker/back/$t
+
+# 压缩指定目录为zip
+zip -r -q $zip_path /Users/Admin/Server/palworld-arm-docker/palworld/Pal/Saved/*
+
+# 遍历并删除3天之前的文件
+back_path=/Users/Admin/Server/palworld-arm-docker/back/
+
+# 获取当前时间戳
+current_time=$(date +%s)
+
+# 遍历back路径下的文件
+for file in $back_path*
+do
+    # 检查文件的修改时间
+    modified_time=$(stat -f %m $file)
+    
+    # 计算文件的时间差（以秒为单位）
+    time_diff=$((current_time - modified_time))
+    
+    # 判断文件是否超过3天未修改
+    if [ $time_diff -gt $((3 * 24 * 60 * 60)) ]
+    then
+        # 删除文件
+        rm $file
+    fi
+done
+</code></pre>
+<ol start="3">
+<li>在终端中，输入命令 <code>crontab -e</code> 开始编辑定时任务，在编辑界面中按<code>i</code>进入输入状态，输入下面的指令（注意按照你<code>palworld-arm-docker</code> 文件夹的实际路径对脚本中的路径进行修改）</li>
+</ol>
+<pre><code>*/30 * * * * /bin/bash /Users/Admin/Server/palworld-arm-docker/back.sh
+</code></pre>
+<p>按<code>esc</code>退出输入状态，输入<code>:wq</code>保存文件并退出。如果此时有弹窗提示是否同意，点击同意。<br>
+系统会在每个小时的0分和30分钟备份一次存档。</p>
+<h4 id="回滚存档">回滚存档</h4>
+<p>一旦发生不幸，可以开始回滚存档。</p>
+<ol>
+<li>终端 <code>cd</code> 进入<code>palworld-arm-docker</code>文件夹下，停止 docker 容器<code>docker-compose down</code></li>
+<li>将之前的备份解压，确认成功解压后</li>
+<li>进入 <code>/Users/Admin/Server/palworld-arm-docker/palworld/Pal/Saved/</code> 目录下，压缩备份当前的坏存档，之后删除<code>Saved</code>文件夹下的所有文件。</li>
+<li>将之前解压好的备份移到<code>Saved</code>文件夹下</li>
+<li>终端中启动 docker 容器<code>docker-compose up -d</code></li>
+</ol>
+<h3 id="更新版本">更新版本</h3>
+<p>此docker镜像有自动更新机制，如果服务端有新的更新，会在 docker 容器启动时自动更新游戏。</p>
+<ol>
+<li>终端 <code>cd</code> 进入<code>palworld-arm-docker</code>文件夹下，停止 docker 容器<code>docker-compose down</code></li>
+<li>终端中启动 docker 容器<code>docker-compose up -d</code></li>
+<li>使用 <code>sudo docker logs pal</code> 查看更新进度和是否启动部署成功</li>
+</ol>
+<h2 id="补充">补充</h2>
+<ol>
+<li>设置ServerPassword的话，无法直接输入ip+端口加入房间，必须要曲线救国，最好别设置。</li>
+<li>帕鲁服务端目前非常吃配置，机器内存不建议低于16G。</li>
+<li>帕鲁服务端目前非常吃配置，frps服务器的带宽也很重要，想流畅不卡最少一个在线用户要分到1M的带宽。</li>
+<li>此docker容器的root密码为：steamcmd</li>
+</ol>
+<p>看到最后麻烦给我点个赞！</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[iOS Live Activity(灵动岛)开发问题排查]]></title>
+        <id>https://www.yiios.com/post/ios-live-activityling-dong-dao-kai-fa-wen-ti-pai-cha/</id>
+        <link href="https://www.yiios.com/post/ios-live-activityling-dong-dao-kai-fa-wen-ti-pai-cha/">
+        </link>
+        <updated>2023-08-05T12:20:46.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="推送失败">推送失败:</h2>
+<p>1.<code>TooManyProviderTokenUpdates</code></p>
+<p>测试环境对推送次数有一定的限制.尝试切换线路(sandbox / development)可以获得更多推送次数.</p>
+<p>如果切换线路无法解决问题,建议重新run一遍工程,这样可以获得新的deviceToken,完成推送测试.</p>
+<p>2.<code>InvalidProviderToken / InternalServerError</code></p>
+<p>尝试重新选择证书,重新run工程吧...暂时无解.</p>
+<h2 id="推送成功但设备并未收到更新">推送成功,但设备并未收到更新</h2>
+<p>这种情况需要打开<code>控制台</code>来观察日志</p>
+<p>1.选择对应设备</p>
+<p>2.点击错误和故障</p>
+<p>3.过滤条件中添加这三项进程<code>liveactivitiesd</code> <code>apsd</code> <code>chronod</code></p>
+<p>4.点击开始，在下方可以看到错误日志<br>
+<img src="https://www.yiios.com/post-images/1730793509195.jpg" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+</feed>

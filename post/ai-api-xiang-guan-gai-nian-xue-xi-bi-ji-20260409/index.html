@@ -1,0 +1,263 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>AI API 相关概念学习笔记 - 20260409 | 画家-个人简历</title>
+
+<link rel="shortcut icon" href="https://www.yiios.com/favicon.ico?v=1775726514553">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.yiios.com/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145635717-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-145635717-1');
+</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            画家-个人简历
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/friends" class="menu gt-a-link">
+                    友链
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/post/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1775726514553"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    AI API 相关概念学习笔记 - 20260409
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2026-04-09 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <!-- more -->
+<h2 id="一-大语言模型训练阶段">一、 大语言模型训练阶段</h2>
+<p>大语言模型的诞生通常需要经历以下三个关键阶段，能力层层递进：</p>
+<ol>
+<li>预训练 (Pre-training)核心机制：使用海量的未标注文本数据来调整模型参数，让其学习底层语言规律与丰富的世界知识。阶段成果：模型具备了良好的文本生成能力（即“接话茬”的能力）。</li>
+<li>有监督微调 (Supervised Fine-Tuning, SFT)核心机制：使用高质量的“指令-回复”对（语料）来微调模型，将其文本生成能力转化为对用户有价值的回复。阶段成果：模型具备了基本的能力，能够遵循人类指令回答问题或者执行特定任务。</li>
+<li>对齐训练 (Alignment)核心机制：定义“什么是好的回复”，综合考虑有用性 (Helpful)、无害性 (Harmless)、诚实性 (Honest) 这 3H原则 来塑造模型的价值观。阶段成果：进一步调整模型，优化输出的质量与人类期望的符合度。</li>
+</ol>
+<hr>
+<h2 id="二-lora-微调模型-peft">二、 LoRA 微调模型 (PEFT)</h2>
+<p><strong>LoRA (Low-Rank Adaptation)</strong> 属于参数高效微调 (PEFT) 技术的一种主流方法。</p>
+<ul>
+<li>核心原理：在已有预训练模型的基础上，冻结绝大部分预训练参数，仅更新极小部分参数（通过注入低秩矩阵实现）。</li>
+<li>适用场景：算力与显存资源受限的环境。多任务并发的部署需求。垂直领域下游应用的快速迭代。</li>
+</ul>
+<hr>
+<h2 id="三-大模型生成控制参数">三、 大模型生成控制参数</h2>
+<p>在调用 API 生成文本时，通过调整以下参数可以控制输出的多样性与确定性：</p>
+<h3 id="1-temperature-温度">1. Temperature (温度)</h3>
+<figure data-type="image" tabindex="1"><img src="https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/79484473296/53d2/5dd6/4518/7f12a93e6cb521dc26477ec4837ffb8c.jpg" alt="" loading="lazy"></figure>
+<ul>
+<li>高温 (High Temperature)：导致推理解码阶段的候选词分布偏向平坦，拉近各个词汇之间的概率差异，输出更具随机性和创造力。</li>
+<li>低温 (Low Temperature)：拉大候选词之间的概率差。当温度趋近于 0 时，理论上会退化为贪心解码 (Greedy Decoding)，即永远只选择概率最高的候选词，输出极其确定。</li>
+</ul>
+<h3 id="2-top-k-采样">2. Top-k 采样</h3>
+<p><strong>机制</strong>：按照<strong>数量</strong>来控制候选词范围。先输出概率分布，找出概率最高的 <code>k</code> 个候选词，仅在这个范围内进行采样。</p>
+<ul>
+<li>优点：减少选中极低概率候选词的可能，避免这部分词元导致的事实错误或语义不通。</li>
+<li>缺点：k 值是固定的，不考虑概率分布的平坦程度。当只需要 2-3 个合理选项时，固定的 k 会被迫引入低概率词元。当场景需要更多合理候选词时，固定的 k 又会限制范围，过滤掉全局最优的可能性。</li>
+</ul>
+<h3 id="3-top-p-采样-nucleus-sampling">3. Top-p 采样 (Nucleus Sampling)</h3>
+<p><strong>机制</strong>：按照<strong>概率总和</strong>来控制候选词范围。将所有候选词按概率从高到低排序并依次累加，当累加值刚超过 <code>p</code> 值时停止，被累加的词即组成新的采样池，随后进行归一化采样。</p>
+<ul>
+<li>优点：能够自适应概率分布的平坦程度，完美解决了 Top-k 数量固定的缺点。</li>
+<li>缺点：在概率分布极端集中时（例如某一个候选词的概率极高），截断范围会急剧缩小，退化为几乎确定性的选择。</li>
+</ul>
+<blockquote>
+<p><strong>💡 最佳实践</strong><br>
+在实际应用中，通常建议将 <strong>Top-p 和 Top-k 结合使用</strong>（取两者的交集或并集），既能动态适应分布，又能保证截断低质量词元，达到最理想的生成效果。</p>
+</blockquote>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://www.yiios.com/post/bu-yao-bei-di-jie-meng-bi-liao-shuang-yan-3-fen-zhong-jiao-ni-ru-he-pan-duan-zhong-zhuan-zhan-de-shi-ji-jie-ge/" class="post-title gt-a-link">
+                    不要被低价蒙蔽了双眼，3分钟教你如何判断中转站的实际价格
+                </a>
+            </div>
+        
+
+        
+            <span id="/post/ai-api-xiang-guan-gai-nian-xue-xi-bi-ji-20260409/" class="leancloud_visitors" data-flag-title="AI API 相关概念学习笔记 - 20260409">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'ZLEVCurGXf8sLfemxNkSfxR5-MdYXbMMI',
+		appKey: 'gNeL8Ht0Uj2EE3b6ubMdtdfm',
+		avatar: 'retro',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: '说点什么...',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/yiios" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021150605号-1</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://www.yiios.com/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
